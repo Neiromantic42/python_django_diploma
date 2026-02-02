@@ -3,5 +3,5 @@ from django.apps import AppConfig
 
 class FrontendConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'diploma_frontend.frontend'
+    name = 'diploma-frontend.frontend'
 

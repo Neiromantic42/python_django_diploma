@@ -13,7 +13,7 @@ import os.path
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'diploma_frontend.frontend', # HTML, шаблоны и статика
-    'products' # API и модели товаров
+    'diploma-frontend.frontend', # HTML, шаблоны и статика
+    'diploma_backend.products' # API и модели товаров
 ]
 
 MIDDLEWARE = [
@@ -123,5 +123,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'diploma_frontend', 'frontend', 'static')
+    os.path.join(BASE_DIR.parent, 'diploma-frontend', 'frontend', 'static')
 ]

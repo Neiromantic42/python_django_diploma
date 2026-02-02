@@ -22,7 +22,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('diploma_frontend.frontend.urls')), # подключает все фронтенд-шаблоны
+    path('', include('diploma-frontend.frontend.urls')), # подключает все фронтенд-шаблоны
     # path('api/products/', include('products.urls')), # подключаем все пути приложения products
 ]
 
