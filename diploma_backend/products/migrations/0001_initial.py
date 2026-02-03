@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             name='Image',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('src', models.ImageField(upload_to='products/', verbose_name='Ссылка где лежит картинка')),
+                ('src', models.ImageField(upload_to='images/', verbose_name='Ссылка где лежит картинка')),
                 ('alt', models.CharField(blank=True, max_length=255, verbose_name='Текстовое описание картинки')),
             ],
             options={
@@ -60,7 +60,7 @@ class Migration(migrations.Migration):
                 ('is_popular', models.BooleanField(default=False)),
                 ('is_limited', models.BooleanField(default=False)),
                 ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.category')),
-                ('tags', models.ManyToManyField(blank=True, related_name='products', to='products.tag', verbose_name='связь многие ко многим с тегом продукта')),
+                ('tags', models.ManyToManyField(blank=True, related_name='images', to='products.tag', verbose_name='связь многие ко многим с тегом продукта')),
             ],
             options={
                 'verbose_name': 'Product',

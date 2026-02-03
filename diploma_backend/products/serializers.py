@@ -1,11 +1,12 @@
 from django.db.models import Avg
 from rest_framework import serializers  # Импортируем модуль сериализаторов DRF
-from .models import Product
+from .models import Product, Category
 
 
 class ProductSerializer(serializers.ModelSerializer):
     """
     Сериализатор для модели Product.
+
     Преобразует объекты Product <-> JSON.
     Используется для чтения, создания, обновления и удаления товаров
     """
@@ -76,3 +77,42 @@ class ProductSerializer(serializers.ModelSerializer):
         Метод вернет средний рейтинг товара
         """
         return obj.reviews.aggregate(avg=Avg('rate'))['avg'] or 0
+
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для модели Category.
+
+    Преобразует объекты Category <-> JSON.
+    """
+    image = serializers.SerializerMethodField()
+    subcategories = serializers.SerializerMethodField()
+
+
+    class Meta:
+        model = Category
+        fields = [
+            "id",
+            "title",
+            "image",
+            "subcategories"
+        ]
+
+    def get_image(self, odj: Category) -> dict:
+        """
+        Метод вернет список изображений в формате [{"src": url, "alt": name}]
+        """
+        if odj.image:
+            return {
+                "src": odj.image.src.url,
+                "alt": odj.image.alt or "",
+            }
+        return None
+
+    def get_subcategories(self, obj: Category):
+        """
+        Возвращает список подкатегорий рекурсивно
+        """
+        sub = obj.subcategories.all() # обращаемся ко всем подкатегориям
+        return CategorySerializer(sub, many=True).data # рекурсивно вызываем CategorySerializer

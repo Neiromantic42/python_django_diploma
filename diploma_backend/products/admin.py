@@ -37,6 +37,7 @@ class ProductAdmin(admin.ModelAdmin):
         "rating",
         "is_popular",
         "is_limited",
+        "archived"
 
     )
     list_filter = ("is_limited", "free_delivery", "category")
@@ -73,4 +74,10 @@ class CategoryAdmin(admin.ModelAdmin):
 class TagAdmin(admin.ModelAdmin):
     list_display = ("name", )
     search_fields = ("name", )
+
+
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+    list_display = ("src", "alt")
+    search_fields = ("alt", )
 

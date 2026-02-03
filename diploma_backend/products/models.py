@@ -18,7 +18,7 @@ class Product(models.Model):
     free_delivery = models.BooleanField(default=False)
 
     tags = models.ManyToManyField(
-        'Tag', blank=True, related_name='products',
+        'Tag', blank=True, related_name='images',
         verbose_name="связь многие ко многим с тегом продукта")
 
     rating = models.DecimalField(
@@ -29,6 +29,12 @@ class Product(models.Model):
 
     is_popular = models.BooleanField(default=False)
     is_limited = models.BooleanField(default=False)
+
+    archived = models.BooleanField(
+        default=False,
+        verbose_name="Архивация товара (скрыт/доступен для продажи)",
+        help_text = "Если включено, товар считается архивным и не отображается в каталоге для покупателей",
+    )
 
     class Meta:
         verbose_name = 'Product'
@@ -132,10 +138,13 @@ class Image(models.Model):
         Product,
         on_delete=models.CASCADE,
         related_name="images",
-        verbose_name="Связь с продуктом: один ко многим"
+        verbose_name="Связь с продуктом: один ко многим",
+        null=True,
+        blank=True,
+
     )
 
-    src = models.ImageField(upload_to='products/', verbose_name="Ссылка где лежит картинка")
+    src = models.ImageField(upload_to='images/', verbose_name="Ссылка где лежит картинка")
     alt = models.CharField(max_length=255, blank=True, verbose_name="Текстовое описание картинки")
 
     class Meta:
