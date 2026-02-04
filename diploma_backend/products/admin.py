@@ -65,8 +65,8 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "image", "parent")
-    search_fields = ("title", )
+    list_display = ("id", "title", "image", "parent", "is_active")
+    search_fields = ("title", "is_active")
 
 
 

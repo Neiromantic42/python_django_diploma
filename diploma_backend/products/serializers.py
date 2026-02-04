@@ -114,5 +114,9 @@ class CategorySerializer(serializers.ModelSerializer):
         """
         Возвращает список подкатегорий рекурсивно
         """
-        sub = obj.subcategories.all() # обращаемся ко всем подкатегориям
-        return CategorySerializer(sub, many=True).data # рекурсивно вызываем CategorySerializer
+        level = self.context.get("level", 1) # получаем уровень вложенности категории
+        if level >= 2: # Если уровень больше двух, возвращаем пустой список
+            return []
+        sub = obj.subcategories.filter(is_active=True) # обращаемся ко всем активным подкатегориям
+        # рекурсивно вызываем CategorySerializer и передаем в контекст уровень вложенности
+        return CategorySerializer(sub, many=True, context={"level": level + 1}).data or []

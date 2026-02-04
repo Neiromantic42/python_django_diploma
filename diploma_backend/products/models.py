@@ -61,6 +61,12 @@ class Category(models.Model):
         related_name='subcategories',
         on_delete=models.CASCADE
     )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name="Активная категория",
+        help_text="Если True, категория отображается на сайте."
+                  " Если False — архивируется и не показывается."
+    )
 
     def __str__(self):
         return self.title

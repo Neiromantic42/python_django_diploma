@@ -1,8 +1,8 @@
 import logging
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView
-from .models import Product
-from .serializers import ProductSerializer
+from .models import Product, Category
+from .serializers import ProductSerializer, CategorySerializer
 
 
 
@@ -22,4 +22,10 @@ class ProductsLimitedListView(ListAPIView):
     )
     serializer_class = ProductSerializer
 
+class ProductCategory(ListAPIView):
+    """
+    Представление для получения категорий товаров
+    """
+    queryset = Category.objects.filter(is_active=True, parent=None)
+    serializer_class = CategorySerializer
 

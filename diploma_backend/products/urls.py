@@ -2,7 +2,8 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 
 from .views import (
-    ProductsLimitedListView
+    ProductsLimitedListView,
+    ProductCategory
 )
 
 
@@ -12,5 +13,6 @@ from .views import (
 
 urlpatterns = [
     # *router.urls,
-    path('limited/', ProductsLimitedListView.as_view(), name="product_limited")
+    path('products/limited/', ProductsLimitedListView.as_view(), name="product_limited"),
+    path('categories/', ProductCategory.as_view(), name="product_category")
 ]
