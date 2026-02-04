@@ -10,7 +10,7 @@ __pycache__/
 .venv/
 
 # Database
-db.sqlite3
+diploma_backend/db.sqlite3
 
 # Media files (user uploads)
 diploma_backend/media/
