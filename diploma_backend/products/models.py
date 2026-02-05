@@ -27,13 +27,33 @@ class Product(models.Model):
         default=0
     )
 
-    is_popular = models.BooleanField(default=False)
     is_limited = models.BooleanField(default=False)
+
+    sort_index = models.PositiveIntegerField(
+        default=50,
+        verbose_name="Индекс популярности товара",
+        help_text="Чем меньше значение, тем выше товар в топе."
+                  " При одинаковом индексе учитывается количество покупок."
+    )
+    purchases_count = models.PositiveIntegerField(
+        default=0,
+        verbose_name="количество покупок",
+        help_text="Автоматически увеличивается при каждой покупке."
+                  " Редактировать вручную не требуется."
+                  " Но если очень хочется то можно."
+    )
 
     archived = models.BooleanField(
         default=False,
         verbose_name="Архивация товара (скрыт/доступен для продажи)",
         help_text = "Если включено, товар считается архивным и не отображается в каталоге для покупателей",
+    )
+
+    is_banner = models.BooleanField(
+        default=False,
+        verbose_name="Продающие товары (banners)",
+        help_text="Если включено, товар попадает в блок banners на главной странице."
+                  " Он же считается рекламным, продающим."
     )
 
     class Meta:
@@ -82,7 +102,7 @@ class Specification(models.Model):
         related_name="specifications"
     )
     name = models.CharField(max_length=255, verbose_name="Название характеристики")
-    value = models.CharField(max_length=255, verbose_name="Значение")
+    value = models.CharField(max_length=1500, verbose_name="Полная характеристика товара")
 
     class Meta:
         verbose_name = "Specification"
@@ -170,9 +190,13 @@ class Sale(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Связь с моделью продуктов, один к одному"
     )
-    sale_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена на товар со учетом скидки")
-    date_from = models.DateField()
-    date_to = models.DateField()
+    sale_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name="Цена на товар со учетом скидки"
+    )
+    date_from = models.DateField(verbose_name="Дата начала акции\скидки")
+    date_to = models.DateField(verbose_name="Дата конца акции\скидки")
 
     class Meta:
         verbose_name = "Sale"

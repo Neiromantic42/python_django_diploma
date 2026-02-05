@@ -35,13 +35,14 @@ class ProductAdmin(admin.ModelAdmin):
         "free_delivery",
         "product_tags",
         "rating",
-        "is_popular",
+        "sort_index",
+        "purchases_count",
         "is_limited",
-        "archived"
-
+        "is_banner",
+        "archived",
     )
     list_filter = ("is_limited", "free_delivery", "category")
-    search_fields = ("title", "description", "full_description")
+    search_fields = ("title", "description", "full_description", "is_banner")
     filter_horizontal = ("tags",)
     inlines = [
         ImageInline,
