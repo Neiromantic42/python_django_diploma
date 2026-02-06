@@ -5,9 +5,7 @@ from .models import Product, Category
 from .serializers import ProductSerializer, CategorySerializer
 
 
-
 log = logging.getLogger(__name__) # Создаем логгер
-
 
 
 class ProductsLimitedListView(ListAPIView):
@@ -22,12 +20,14 @@ class ProductsLimitedListView(ListAPIView):
     )
     serializer_class = ProductSerializer
 
+
 class ProductCategoryListView(ListAPIView):
     """
     Представление для получения категорий товаров
     """
     queryset = Category.objects.filter(is_active=True, parent=None)
     serializer_class = CategorySerializer
+
 
 class ProductsPopularListView(ListAPIView):
     """
@@ -40,6 +40,7 @@ class ProductsPopularListView(ListAPIView):
         .order_by("sort_index", "-purchases_count")[:8]
     )
     serializer_class = ProductSerializer
+
 
 class ProductsBannersListView(ListAPIView):
     """

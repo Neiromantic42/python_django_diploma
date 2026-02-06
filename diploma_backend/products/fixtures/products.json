@@ -1,0 +1,647 @@
+[
+{
+  "model": "products.product",
+  "pk": 2,
+  "fields": {
+    "title": "iPhone 14 Plus",
+    "category": 2,
+    "price": "33990.00",
+    "count": 15,
+    "date": "2026-02-04T14:15:16.810Z",
+    "description": "iPhone 14 Plus — смартфон производства корпорации Apple",
+    "full_description": "iPhone 14 Plus — смартфон производства корпорации Apple, версия базового iPhone 14 с увеличенной диагональю дисплея. Представлен 7 сентября 2022 года. \r\nru.wikipedia.org*",
+    "free_delivery": false,
+    "rating": "5.00",
+    "is_limited": true,
+    "sort_index": 50,
+    "purchases_count": 16,
+    "archived": false,
+    "is_banner": false,
+    "tags": [
+      2
+    ]
+  }
+},
+{
+  "model": "products.product",
+  "pk": 3,
+  "fields": {
+    "title": "JBL Flip 5",
+    "category": 1,
+    "price": "7800.00",
+    "count": 20,
+    "date": "2026-02-04T14:22:06.728Z",
+    "description": "JBL Flip 5 — компактная портативная акустическая система",
+    "full_description": "JBL Flip 5 — компактная портативная акустическая система в линейке портативных беспроводных Bluetooth-колонок от JBL.",
+    "free_delivery": false,
+    "rating": "5.00",
+    "is_limited": true,
+    "sort_index": 60,
+    "purchases_count": 7,
+    "archived": false,
+    "is_banner": false,
+    "tags": [
+      2
+    ]
+  }
+},
+{
+  "model": "products.product",
+  "pk": 4,
+  "fields": {
+    "title": "HyperX Cloud Alpha 2",
+    "category": 1,
+    "price": "8999.00",
+    "count": 9,
+    "date": "2026-02-04T14:26:27.682Z",
+    "description": "HyperX Cloud Alpha 2 — беспроводная игровая гарнитура",
+    "full_description": "HyperX Cloud Alpha 2 — беспроводная игровая гарнитура, выпущенная компанией HP под брендом HyperX. Дебютировала в августе 2025 года",
+    "free_delivery": false,
+    "rating": "5.00",
+    "is_limited": true,
+    "sort_index": 50,
+    "purchases_count": 9,
+    "archived": false,
+    "is_banner": false,
+    "tags": [
+      4
+    ]
+  }
+},
+{
+  "model": "products.product",
+  "pk": 5,
+  "fields": {
+    "title": "AirPods Pro 3",
+    "category": 4,
+    "price": "18300.00",
+    "count": 12,
+    "date": "2026-02-05T10:18:09.627Z",
+    "description": "AirPods Pro 3 — третье поколение флагманских беспроводных наушников",
+    "full_description": "AirPods Pro 3 — третье поколение флагманских беспроводных наушников от компании Apple, представленное в 2025 году. Модель стала первым обновлением линейки Pro за три года",
+    "free_delivery": false,
+    "rating": "5.00",
+    "is_limited": false,
+    "sort_index": 1,
+    "purchases_count": 5,
+    "archived": false,
+    "is_banner": false,
+    "tags": [
+      2
+    ]
+  }
+},
+{
+  "model": "products.product",
+  "pk": 6,
+  "fields": {
+    "title": "Xiaomi Mi Smart Band 10 Ceramic Edition",
+    "category": 4,
+    "price": "3400.00",
+    "count": 10,
+    "date": "2026-02-05T10:24:49.581Z",
+    "description": "Xiaomi Mi Smart Band 10 Ceramic Edition — новейшая модель фитнес-браслета",
+    "full_description": "Xiaomi Mi Smart Band 10 Ceramic Edition — новейшая модель фитнес-браслета компании Xiaomi, выпущенная в 2025 году",
+    "free_delivery": false,
+    "rating": "4.00",
+    "is_limited": false,
+    "sort_index": 5,
+    "purchases_count": 6,
+    "archived": false,
+    "is_banner": false,
+    "tags": [
+      3
+    ]
+  }
+},
+{
+  "model": "products.product",
+  "pk": 7,
+  "fields": {
+    "title": "iPhone 17",
+    "category": 2,
+    "price": "88299.00",
+    "count": 100,
+    "date": "2026-02-05T10:29:30.184Z",
+    "description": "iPhone 17 — смартфон, разработанный и продаваемый компанией Apple",
+    "full_description": "iPhone 17 — смартфон, разработанный и продаваемый компанией Apple, iPhone девятнадцатого поколения, пришедший на смену iPhone 16. Устройство было анонсировано 9 сентября 2025 года на мероприятии Apple в Apple Park в Купертино (Калифорния).",
+    "free_delivery": false,
+    "rating": "5.00",
+    "is_limited": false,
+    "sort_index": 0,
+    "purchases_count": 14,
+    "archived": false,
+    "is_banner": false,
+    "tags": [
+      2
+    ]
+  }
+},
+{
+  "model": "products.product",
+  "pk": 8,
+  "fields": {
+    "title": "iPad Air",
+    "category": 5,
+    "price": "56999.00",
+    "count": 13,
+    "date": "2026-02-05T12:45:41.332Z",
+    "description": "iPad Air — линейка планшетов от компании Apple",
+    "full_description": "iPad Air — линейка планшетов от компании Apple. В марте 2025 года представлена модель iPad Air 2025 года — первое мобильное устройство с процессором Apple M3",
+    "free_delivery": false,
+    "rating": "5.00",
+    "is_limited": false,
+    "sort_index": 50,
+    "purchases_count": 0,
+    "archived": false,
+    "is_banner": true,
+    "tags": [
+      2
+    ]
+  }
+},
+{
+  "model": "products.product",
+  "pk": 9,
+  "fields": {
+    "title": "Galaxy Z Flip",
+    "category": 2,
+    "price": "109000.00",
+    "count": 25,
+    "date": "2026-02-05T12:50:41.890Z",
+    "description": "Samsung Galaxy Z Flip (на некоторых территориях продаётся как Samsung Galaxy Flip)",
+    "full_description": "Samsung Galaxy Z Flip (на некоторых территориях продаётся как Samsung Galaxy Flip) — складной смартфон, разработанный Samsung Electronics как часть серии Samsung Galaxy Z. Выпущен в 2020 году.",
+    "free_delivery": false,
+    "rating": "4.00",
+    "is_limited": false,
+    "sort_index": 50,
+    "purchases_count": 32,
+    "archived": false,
+    "is_banner": true,
+    "tags": [
+      2
+    ]
+  }
+},
+{
+  "model": "products.product",
+  "pk": 10,
+  "fields": {
+    "title": "MacBook Air 2025",
+    "category": 3,
+    "price": "144999.00",
+    "count": 13,
+    "date": "2026-02-05T13:05:09.845Z",
+    "description": "5 марта 2025 года компания Apple представила обновлённую версию ноутбука MacBook Air на основе чипа M4",
+    "full_description": "5 марта 2025 года компания Apple представила обновлённую версию ноутбука MacBook Air на основе чипа M4. Обновление коснулось обеих моделей: с экранами на 13 и 15 дюймов.",
+    "free_delivery": false,
+    "rating": "5.00",
+    "is_limited": false,
+    "sort_index": 50,
+    "purchases_count": 1,
+    "archived": false,
+    "is_banner": true,
+    "tags": [
+      2
+    ]
+  }
+},
+{
+  "model": "products.category",
+  "pk": 1,
+  "fields": {
+    "title": "Electronics",
+    "image": 4,
+    "parent": null,
+    "is_active": true
+  }
+},
+{
+  "model": "products.category",
+  "pk": 2,
+  "fields": {
+    "title": "Smartphones",
+    "image": 5,
+    "parent": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "products.category",
+  "pk": 3,
+  "fields": {
+    "title": "Laptops",
+    "image": 6,
+    "parent": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "products.category",
+  "pk": 4,
+  "fields": {
+    "title": "Audio technology",
+    "image": 9,
+    "parent": null,
+    "is_active": true
+  }
+},
+{
+  "model": "products.category",
+  "pk": 5,
+  "fields": {
+    "title": "Tablets and e-books",
+    "image": 13,
+    "parent": null,
+    "is_active": true
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 2,
+  "fields": {
+    "product": 2,
+    "name": "Характеристика Iphone 14 plus",
+    "value": "Экран: 6,7 дюйма, разрешение 2778×1284 пикселя, плотность пикселей 458 Ppi, частота обновления 60 Гц.  ru.wikipedia.org* mobile-review.com Процессор: Apple A15 Bionic, 6 ядер CPU: 2 производительные и 2 эффективные, 5 ядер GPU.  mobile-review.com Память:"
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 3,
+  "fields": {
+    "product": 3,
+    "name": "Характеристика  JBL Flip 5",
+    "value": "вытянутая цилиндрическая форма; большая часть корпуса покрыта сетчатой тканью, по бокам установлены резиновые панели, на одной из которых есть шнурок для крепления; защита от воды IPX7 — колонку можно погружать в воду на глубину до 1 метра в течение 30 ми"
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 4,
+  "fields": {
+    "product": 4,
+    "name": "Тх наушников  HyperX Cloud II",
+    "value": "Виртуальный объёмный звук 7.1 — позволяет слышать даже самые тонкие звуковые детали, что важно в компьютерных играх, например, Counter-Strike: Global Offensive (CS:GO), Dota 2, Call of Duty: Warzone, Apex Legends и PUBG. Амбушюры из мягкой пены с эффектом"
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 5,
+  "fields": {
+    "product": 5,
+    "name": "Тх наушников  AirPods Pro 3",
+    "value": "Компактные внутриканальные наушники с новыми foam-вставками, доступны в пяти размерах, включая XXS. Защищены по стандарту IP57, устойчивы к поту и воде. Система активного шумоподавления стала ещё эффективнее, а Adaptive Audio объединяет шумоподавление и п"
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 6,
+  "fields": {
+    "product": 6,
+    "name": "Некоторые характеристики: Xiaomi Mi Smart Band 10 Ceramic Edition",
+    "value": "Дисплей: 1,72-дюймовый AMOLED-экран с высоким разрешением 212x520 пикселей и пиковой яркостью до 1500 нит. Корпус: лёгкий и прочный, выполненный из керамики. Вес устройства — 15,95 граммов, толщина — 10,95 мм. Автономность: батар"
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 7,
+  "fields": {
+    "product": 7,
+    "name": "Характеристика  iPhone 17",
+    "value": "Дисплей: 6,3-дюймовый OLED-дисплей Super Retina XDR с разрешением 2622×1206 пикселей и динамической частотой обновления ProMotion 120 Гц. Поддерживает функцию Always-On Display. Процессор: 6-ядерный Apple A19. ОЗУ: 8 ГБ LPDDR5. Флеш-память: 256 и 512 ГБ,"
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 8,
+  "fields": {
+    "product": 8,
+    "name": "Характеристика IPad",
+    "value": "Доступна с экранами диагональю 11 и 13 дюймов. В обоих случаях используется IPS-матрица Liquid Retina с плотностью 264 пикселя на дюйм. Поддерживает все модели Apple Pencil, включая топовую модель Pencil Pro с функцией распознавания сжатия и вращения. Для"
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 9,
+  "fields": {
+    "product": 9,
+    "name": "Характеристика  GalFlipaxy Z",
+    "value": "Устройство складывается горизонтально. Использует гибридное стеклянное покрытие — Infinity Flex Display. Шарнирный механизм усилен нейлоновыми волокнами для защиты от пыли. Доступна в трёх цветах для версии LTE (Mirror Purple, Mirror Black и Mirror Gold)"
+  }
+},
+{
+  "model": "products.specification",
+  "pk": 10,
+  "fields": {
+    "product": 10,
+    "name": "Характеристика MacBook Air 2025",
+    "value": "Некоторые отличия MacBook Air M4 от MacBook Air M3: процессор — 10 ядер: 4 производительных и 6 энергоэффективных (раньше их было 4); пропускная способность памяти — до 120 ГБ/с; в базовой конфигурации — 16 ГБ оперативной памяти (было 8 ГБ); можно заказать ноутбук с максимальным объёмом оперативной памяти — 32 ГБ вместо 24 ГБ, а встроенный накопитель — до 2 ТБ; Air умеет работать одновременно с двумя внешними мониторами благодаря портам Thunderbolt 4 (раньше через порты Thunderbolt 3 подключался только один монитор); веб-камера — 12 Мп, а было 2; добавили функцию «В центре внимания» (Centre Stage) и демонстрацию того, что происходит на столе; батарея — 53,8 Вт·ч (раньше было 52,6).   hi-tech.mail.ru Некоторые особенности: поддерживает работу с двумя 6K-мониторами при одновременном использовании встроенного экрана; автономность — до 18 часов работы в режиме просмотра онлайн-видео или до 15 часов работы в браузере; есть функция быстрой зарядки — 50% за 30 минут."
+  }
+},
+{
+  "model": "products.review",
+  "pk": 2,
+  "fields": {
+    "product": 2,
+    "author": "Admin",
+    "email": "a_admin_@gmail.com",
+    "text": "Крутой цвет",
+    "rate": 5,
+    "date": "2026-02-04T14:15:16.814Z"
+  }
+},
+{
+  "model": "products.review",
+  "pk": 3,
+  "fields": {
+    "product": 3,
+    "author": "Admin",
+    "email": "a_admin_@gmail.com",
+    "text": "Хороший звук",
+    "rate": 5,
+    "date": "2026-02-04T14:22:06.736Z"
+  }
+},
+{
+  "model": "products.review",
+  "pk": 4,
+  "fields": {
+    "product": 4,
+    "author": "Admin",
+    "email": "a_admin_@gmail.com",
+    "text": "Стильные наушники",
+    "rate": 5,
+    "date": "2026-02-04T14:26:27.686Z"
+  }
+},
+{
+  "model": "products.review",
+  "pk": 5,
+  "fields": {
+    "product": 5,
+    "author": "Admin",
+    "email": "a_admin_@gmail.com",
+    "text": "Стилевые уши",
+    "rate": 5,
+    "date": "2026-02-05T10:18:09.634Z"
+  }
+},
+{
+  "model": "products.review",
+  "pk": 6,
+  "fields": {
+    "product": 6,
+    "author": "Admin",
+    "email": "a_admin_@gmail.com",
+    "text": "часы топ",
+    "rate": 5,
+    "date": "2026-02-05T10:24:49.586Z"
+  }
+},
+{
+  "model": "products.review",
+  "pk": 7,
+  "fields": {
+    "product": 7,
+    "author": "Admin",
+    "email": "a_admin_@gmail.com",
+    "text": "сочный смартфон",
+    "rate": 5,
+    "date": "2026-02-05T10:29:30.189Z"
+  }
+},
+{
+  "model": "products.review",
+  "pk": 8,
+  "fields": {
+    "product": 8,
+    "author": "Admin",
+    "email": "a_admin_@gmail.com",
+    "text": "Изящный планшетик",
+    "rate": 5,
+    "date": "2026-02-05T12:45:41.336Z"
+  }
+},
+{
+  "model": "products.review",
+  "pk": 9,
+  "fields": {
+    "product": 10,
+    "author": "Admin",
+    "email": "a_admin_@gmail.com",
+    "text": "Красивое устройство",
+    "rate": 4,
+    "date": "2026-02-05T13:05:09.855Z"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 1,
+  "fields": {
+    "name": "New"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 2,
+  "fields": {
+    "name": "Hit"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 3,
+  "fields": {
+    "name": "Sale"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 4,
+  "fields": {
+    "name": "Gaming"
+  }
+},
+{
+  "model": "products.tag",
+  "pk": 5,
+  "fields": {
+    "name": "RGB"
+  }
+},
+{
+  "model": "products.image",
+  "pk": 3,
+  "fields": {
+    "product": 2,
+    "src": "images/iphome_14_plus.jpg",
+    "alt": "Изображение смартвона Iphone 14 plus"
+  }
+},
+{
+  "model": "products.image",
+  "pk": 4,
+  "fields": {
+    "product": null,
+    "src": "images/elektronika.png",
+    "alt": "Изображение категории - Electronics"
+  }
+},
+{
+  "model": "products.image",
+  "pk": 5,
+  "fields": {
+    "product": null,
+    "src": "images/Category_smartphones.webp",
+    "alt": "Изображение категории Smartphones"
+  }
+},
+{
+  "model": "products.image",
+  "pk": 6,
+  "fields": {
+    "product": null,
+    "src": "images/Category_laptop.jpeg",
+    "alt": "Изображение категории Laptop"
+  }
+},
+{
+  "model": "products.image",
+  "pk": 7,
+  "fields": {
+    "product": 3,
+    "src": "images/JBL.jpg",
+    "alt": "Изображение JBL колонки"
+  }
+},
+{
+  "model": "products.image",
+  "pk": 8,
+  "fields": {
+    "product": 4,
+    "src": "images/HyperX.jpg",
+    "alt": "изображение наушников"
+  }
+},
+{
+  "model": "products.image",
+  "pk": 9,
+  "fields": {
+    "product": null,
+    "src": "images/category_audio_technology.jpg",
+    "alt": "Изображение категории Audio technology"
+  }
+},
+{
+  "model": "products.image",
+  "pk": 10,
+  "fields": {
+    "product": 5,
+    "src": "images/AirPods_Pro_3.jpg",
+    "alt": "изображение наушников AirPods Pro 3"
+  }
+},
+{
+  "model": "products.image",
+  "pk": 11,
+  "fields": {
+    "product": 6,
+    "src": "images/mi_band_10_ceramic.jpg",
+    "alt": "изображение фитнес-браслета Xiaomi Mi Smart Band 10 Ceramic Edition"
+  }
+},
+{
+  "model": "products.image",
+  "pk": 12,
+  "fields": {
+    "product": 7,
+    "src": "images/iphone_17.jpg",
+    "alt": "Изображение смартвона Iphone iPhone 17"
+  }
+},
+{
+  "model": "products.image",
+  "pk": 13,
+  "fields": {
+    "product": null,
+    "src": "images/Category_tablets_and_e-books.png",
+    "alt": "Изображение категории Tablets and e-books"
+  }
+},
+{
+  "model": "products.image",
+  "pk": 14,
+  "fields": {
+    "product": 8,
+    "src": "images/ipad_air.jpg",
+    "alt": "изображение IPad"
+  }
+},
+{
+  "model": "products.image",
+  "pk": 15,
+  "fields": {
+    "product": 9,
+    "src": "images/Galaxy_Z_Flip.jpg",
+    "alt": "Изображение смартвона GalFlipaxy Z"
+  }
+},
+{
+  "model": "products.image",
+  "pk": 16,
+  "fields": {
+    "product": 10,
+    "src": "images/MacBook_Air.webp",
+    "alt": "изображение MacBook Air 2025"
+  }
+},
+{
+  "model": "products.sale",
+  "pk": 2,
+  "fields": {
+    "product": 3,
+    "sale_price": "7000.00",
+    "date_from": "2026-01-30",
+    "date_to": "2026-01-31"
+  }
+},
+{
+  "model": "products.sale",
+  "pk": 3,
+  "fields": {
+    "product": 6,
+    "sale_price": "3000.00",
+    "date_from": "2026-02-05",
+    "date_to": "2026-03-05"
+  }
+},
+{
+  "model": "products.sale",
+  "pk": 4,
+  "fields": {
+    "product": 8,
+    "sale_price": "56000.00",
+    "date_from": "2026-02-05",
+    "date_to": "2026-03-05"
+  }
+},
+{
+  "model": "products.sale",
+  "pk": 5,
+  "fields": {
+    "product": 9,
+    "sale_price": "80999.00",
+    "date_from": "2026-02-05",
+    "date_to": "2027-03-18"
+  }
+},
+{
+  "model": "products.sale",
+  "pk": 6,
+  "fields": {
+    "product": 10,
+    "sale_price": "144000.00",
+    "date_from": "2026-02-05",
+    "date_to": "2027-03-18"
+  }
+}
+]
