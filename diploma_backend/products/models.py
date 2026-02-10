@@ -17,11 +17,7 @@ class Product(models.Model):
     tags = models.ManyToManyField(
         'Tag', blank=True, related_name='images',
         verbose_name="связь многие ко многим с тегом продукта")
-    rating = models.DecimalField(
-        max_digits=3,
-        decimal_places=2,
-        default=0
-    )
+
     is_limited = models.BooleanField(default=False)
     sort_index = models.PositiveIntegerField(
         default=50,
@@ -48,11 +44,9 @@ class Product(models.Model):
                   " Он же считается рекламным, продающим."
     )
 
-
     class Meta:
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
-
 
     def __str__(self):
         return self.title
@@ -83,7 +77,6 @@ class Category(models.Model):
                   " Если False — архивируется и не показывается."
     )
 
-
     def __str__(self):
         return self.title
 
@@ -100,11 +93,9 @@ class Specification(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название характеристики")
     value = models.CharField(max_length=1500, verbose_name="Полная характеристика товара")
 
-
     class Meta:
         verbose_name = "Specification"
         verbose_name_plural = "Specifications"
-
 
     def __str__(self):
         return f"{self.name}: {self.value}"
@@ -132,11 +123,9 @@ class Review(models.Model):
     )
     date = models.DateTimeField(auto_now_add=True)
 
-
     class Meta:
         verbose_name = "Review"
         verbose_name_plural = "Reviews"
-
 
     def __str__(self):
         return f"Review by {self.author} for {self.product.title}"
@@ -148,20 +137,18 @@ class Tag(models.Model):
     """
     name = models.CharField(max_length=25, unique=True, verbose_name="Название тега")
 
-
     class Meta:
         verbose_name = "Tag"
         verbose_name_plural = "Tags"
 
-
     def __str__(self):
         return self.name
+
 
 class Image(models.Model):
     """
     Модель Image представляет собой картинки товаров
     """
-
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
@@ -174,11 +161,9 @@ class Image(models.Model):
     src = models.ImageField(upload_to='images/', verbose_name="Ссылка где лежит картинка")
     alt = models.CharField(max_length=255, blank=True, verbose_name="Текстовое описание картинки")
 
-
     class Meta:
         verbose_name = "Image"
         verbose_name_plural = "Images"
-
 
     def __str__(self):
         return self.alt or self.src.name
@@ -201,11 +186,9 @@ class Sale(models.Model):
     date_from = models.DateField(verbose_name="Дата начала акции\скидки")
     date_to = models.DateField(verbose_name="Дата конца акции\скидки")
 
-
     class Meta:
         verbose_name = "Sale"
         verbose_name_plural = "Sales"
-
 
     def __str__(self):
         return f"Sale for {self.product.title}"

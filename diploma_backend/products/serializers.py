@@ -17,7 +17,6 @@ class ProductSerializer(serializers.ModelSerializer):
     rating = serializers.SerializerMethodField()
     freeDelivery = serializers.BooleanField(source="free_delivery")
 
-
     class Meta: # Класс конфигурации сериализатора
         model = Product # Указываем, с какой моделью работает сериализатор
         fields = [ # Перечисляем поля, которые попадут в JSON
@@ -36,7 +35,6 @@ class ProductSerializer(serializers.ModelSerializer):
 
         ]
 
-
     def get_images(self, odj: Product) -> list[dict]:
         """
         Метод вернет список изображений в формате [{"src": url, "alt": name}]
@@ -49,13 +47,11 @@ class ProductSerializer(serializers.ModelSerializer):
             for img in odj.images.all()
         ]
 
-
     def get_category(self, obj: Product):
         """
         Метод вернет категорию товара int
         """
         return obj.category.id
-
 
     def get_tags(self, obj: Product):
         """
@@ -68,7 +64,6 @@ class ProductSerializer(serializers.ModelSerializer):
             }
             for tag in obj.tags.all()
         ]
-
 
     def get_reviews(self, obj: Product):
         """
@@ -93,7 +88,6 @@ class CategorySerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
     subcategories = serializers.SerializerMethodField()
 
-
     class Meta:
         model = Category
         fields = [
@@ -102,7 +96,6 @@ class CategorySerializer(serializers.ModelSerializer):
             "image",
             "subcategories"
         ]
-
 
     def get_image(self, odj: Category) -> dict:
         """
@@ -114,7 +107,6 @@ class CategorySerializer(serializers.ModelSerializer):
                 "alt": odj.image.alt or "",
             }
         return None
-
 
     def get_subcategories(self, obj: Category):
         """

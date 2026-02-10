@@ -34,7 +34,6 @@ class ProductAdmin(admin.ModelAdmin):
         "short_description",
         "free_delivery",
         "product_tags",
-        "rating",
         "sort_index",
         "purchases_count",
         "is_limited",

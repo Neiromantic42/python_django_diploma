@@ -126,3 +126,18 @@ frontend_static_path = BASE_DIR / 'diploma-frontend' / 'frontend' / 'static'
 
 # STATICFILES_DIRS добавляем только если путь реально существует
 STATICFILES_DIRS = [frontend_static_path] if frontend_static_path.exists() else []
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+}

@@ -6,6 +6,7 @@ from .views import (
     ProductCategoryListView,
     ProductsPopularListView,
     ProductsBannersListView,
+    product_catalog, # функция представления, для обработки запроса catalog
 
 )
 
@@ -20,4 +21,5 @@ urlpatterns = [
     path('categories/', ProductCategoryListView.as_view(), name='product_category'),
     path('products/popular/', ProductsPopularListView.as_view(), name='product_popular'),
     path('banners/', ProductsBannersListView.as_view(), name='product_banners'),
+    path('catalog/', product_catalog, name='products_catalog')
 ]
