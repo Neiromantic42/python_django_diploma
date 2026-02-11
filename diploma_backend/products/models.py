@@ -7,7 +7,11 @@ class Product(models.Model):
     Модель Product представляет товар
     """
     title = models.CharField(max_length=255, db_index=True)
-    category = models.ForeignKey("Category", on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        "Category",
+        on_delete=models.CASCADE,
+        verbose_name="Связь один ко многим с категориями"
+    )
     price = models.DecimalField(max_digits=10, decimal_places=2)
     count = models.PositiveIntegerField(default=0)
     date = models.DateTimeField(auto_now_add=True)
@@ -15,7 +19,9 @@ class Product(models.Model):
     full_description = models.TextField()
     free_delivery = models.BooleanField(default=False)
     tags = models.ManyToManyField(
-        'Tag', blank=True, related_name='images',
+        'Tag',
+        blank=True,
+        related_name='products',
         verbose_name="связь многие ко многим с тегом продукта")
 
     is_limited = models.BooleanField(default=False)
@@ -176,6 +182,7 @@ class Sale(models.Model):
     product = models.OneToOneField(
         Product,
         on_delete=models.CASCADE,
+        related_name='sale', # явно указываем имя обратной связи
         verbose_name="Связь с моделью продуктов, один к одному"
     )
     sale_price = models.DecimalField(

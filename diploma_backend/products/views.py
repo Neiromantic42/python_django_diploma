@@ -7,7 +7,7 @@ from django.db.models import  Avg
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView
-from .models import Product, Category
+from .models import Product, Category, Tag
 from .serializers import ProductSerializer, CategorySerializer
 
 
@@ -22,8 +22,10 @@ class ProductsLimitedListView(ListAPIView):
         Product
         .objects
         .filter(is_limited=True, archived=False)
-        .order_by('-date')[:16]
-    )
+        .order_by('-date')
+        .select_related("sale", "category")
+        .prefetch_related('tags', 'images', "reviews")
+    )[:16]
     serializer_class = ProductSerializer
 
 
@@ -75,20 +77,25 @@ def product_catalog(request):
     filter_max_price = float(request.GET.get('filter[maxPrice]', 50000))
     filter_available = request.GET.get('filter[available]')
     filter_free_delivery = request.GET.get('filter[freeDelivery]')
+    filter_tags = request.GET.getlist('tags[]')
     category_filter = request.GET.get('category')
     # получаем все сортировки из строки запроса
     sort = request.GET.get('sort')
     sort_type = request.GET.get('sortType')
 
     # логируем данные по фильтрации и сортировкам из запроса
-    logger.info(f"Фильтр по имени товара: {filter_name},"
-                 f"\nФильтр по минимальной цене: {filter_min_price},"
-                 f"\nФильтр по максимальной цене:{filter_max_price},"
-                 f"\nФильтр кол-ва товара, больше нуля: {filter_available},"
-                 f"\nФильтр бесплатной доставки: {filter_free_delivery},"
-                 f"\nФильтр по категории: {category_filter},"
-                 f"\nСортировка по: {sort},"
-                 f"\nТип сортировки: {sort_type}")
+    logger.info(
+        f"Параметры фильтрации и сортировки запроса:\n"
+        f"  - Фильтр по имени товара: {filter_name}\n"
+        f"  - Фильтр по минимальной цене: {filter_min_price}\n"
+        f"  - Фильтр по максимальной цене: {filter_max_price}\n"
+        f"  - Только товары в наличии: {filter_available}\n"
+        f"  - Бесплатная доставка: {filter_free_delivery}\n"
+        f"  - Фильтр по категории: {category_filter}\n"
+        f"  - Сортировка по: {sort}\n"
+        f"  - Тип сортировки: {sort_type}\n"
+        f"  - Массив тегов: {filter_tags}"
+    )
 
     # проверяем, пришел ли в строке запроса фильтр, имени товара
     if filter_name:
@@ -110,6 +117,9 @@ def product_catalog(request):
     if filter_free_delivery == 'true':
         # применяя фильтр freeDelivery=True, накапливаем в qs условия фильтрации
         products = products.filter(free_delivery=True)
+    # проверяем, пришел ли в строке запроса массив с тегами ['1', '2']
+    if filter_tags:
+        products = products.filter(tags__pk__in=filter_tags).distinct()
     # проверяем, пришел ли в строке запроса фильтр, category
     if category_filter:
         # применяя фильтр category, накапливаем в qs условия фильтрации
@@ -157,3 +167,38 @@ def product_catalog(request):
         "currentPage": current_page,
         "lastPage": paginator.num_pages
     })
+
+
+@api_view(["GET"])
+def tags_popular(request):
+    """
+    представление на основе функции
+
+    обрабатывает запрос GET tags/
+    отдает теги товаров
+    """
+    category = request.GET.get('category', None)
+
+    if category:
+        logger.info(f"Категория: {category}")
+        # получаем все товары относящиеся к переданной категории
+        products = Product.objects.filter(category_id=category)
+        # получаем все теги от продуктов с переданной категорией
+        tags = Tag.objects.filter(products__in=products).distinct()
+        return Response([
+            {
+                "id": tag.pk,
+                "name": tag.name
+            }
+            for tag in tags
+        ])
+
+    tags = Tag.objects.all()
+
+    return Response([
+        {
+            "id": tag.pk,
+            "name": tag.name
+        }
+        for tag in tags
+    ])

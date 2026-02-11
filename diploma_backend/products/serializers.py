@@ -10,6 +10,7 @@ class ProductSerializer(serializers.ModelSerializer):
     Преобразует объекты Product <-> JSON.
     Используется для чтения, создания, обновления и удаления товаров
     """
+    price = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
     category = serializers.SerializerMethodField()
     tags = serializers.SerializerMethodField()
@@ -34,6 +35,13 @@ class ProductSerializer(serializers.ModelSerializer):
             "rating",
 
         ]
+    def get_price(self, obj: Product):
+        """
+        Метод вернет цену(price) с учетом скидки, если она есть
+        """
+        if hasattr(obj, 'sale') and obj.sale:
+            return obj.sale.sale_price
+        return obj.price
 
     def get_images(self, odj: Product) -> list[dict]:
         """
