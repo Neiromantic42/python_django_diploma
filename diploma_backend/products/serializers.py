@@ -1,6 +1,6 @@
 from django.db.models import Avg
 from rest_framework import serializers  # Импортируем модуль сериализаторов DRF
-from .models import Product, Category
+from .models import Product, Category, Review
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -35,6 +35,8 @@ class ProductSerializer(serializers.ModelSerializer):
             "rating",
 
         ]
+
+
     def get_price(self, obj: Product):
         """
         Метод вернет цену(price) с учетом скидки, если она есть
@@ -42,6 +44,7 @@ class ProductSerializer(serializers.ModelSerializer):
         if hasattr(obj, 'sale') and obj.sale:
             return obj.sale.sale_price
         return obj.price
+
 
     def get_images(self, odj: Product) -> list[dict]:
         """
@@ -55,11 +58,13 @@ class ProductSerializer(serializers.ModelSerializer):
             for img in odj.images.all()
         ]
 
+
     def get_category(self, obj: Product):
         """
         Метод вернет категорию товара int
         """
         return obj.category.id
+
 
     def get_tags(self, obj: Product):
         """
@@ -73,18 +78,78 @@ class ProductSerializer(serializers.ModelSerializer):
             for tag in obj.tags.all()
         ]
 
+
     def get_reviews(self, obj: Product):
         """
         Метод вернет кол-во отзывов(кол-во записей в табл Review)
         """
-        return obj.reviews.count()
+        # return obj.reviews.count()
+        return obj.reviews_count
 
 
     def get_rating(self, obj: Product):
         """
         Метод вернет средний рейтинг товара
         """
-        return obj.reviews.aggregate(avg=Avg('rate'))['avg'] or 0
+        # return obj.reviews.aggregate(avg=Avg('rate'))['avg'] or 0
+        return obj.avg_rating or 0
+
+
+class ProductDetailSerializer(ProductSerializer):
+    """
+    Служит для обработки запроса конкретного продукта
+
+    GET /product{id}
+    Наследует поля от ProductSerializer
+    """
+    fullDescription = serializers.CharField(source='full_description')
+    tags = serializers.SerializerMethodField()
+    reviews = serializers.SerializerMethodField()
+    specifications = serializers.SerializerMethodField()
+
+    class Meta(ProductSerializer.Meta):
+        fields = ProductSerializer.Meta.fields + [
+            "fullDescription",
+            "tags",
+            "reviews",
+            "specifications",
+        ]
+
+
+    def get_tags(self, obj: Product):
+        """
+        Метод вернет теги товара в формате ["string"]
+        """
+        return [tag.name for tag in obj.tags.all()] or []
+
+
+    def get_specifications(self, obj: Product):
+        """
+        метод вернет спецификацию товара в формате [{"name": "size"...}...]
+        """
+        return [
+            {
+                "name": spec.name,
+                "value": spec.value
+            }
+            for spec in obj.specifications.all()
+        ]
+
+
+    def get_reviews(self, obj: Product):
+        """
+        метод вернет отзывы в формате [{"author": "Annoying Orange",},...]
+        """
+        return [
+            {
+                "author": review.author,
+                "email": review.email,
+                "text": review.text,
+                "rate": review.rate,
+                "date": review.date
+            }
+            for review in obj.reviews.all()
+        ]
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -105,6 +170,7 @@ class CategorySerializer(serializers.ModelSerializer):
             "subcategories"
         ]
 
+
     def get_image(self, odj: Category) -> dict:
         """
         Метод вернет список изображений в формате [{"src": url, "alt": name}]
@@ -116,6 +182,7 @@ class CategorySerializer(serializers.ModelSerializer):
             }
         return None
 
+
     def get_subcategories(self, obj: Category):
         """
         Возвращает список подкатегорий рекурсивно
@@ -123,6 +190,23 @@ class CategorySerializer(serializers.ModelSerializer):
         level = self.context.get("level", 1) # получаем уровень вложенности категории
         if level >= 2: # Если уровень больше двух, возвращаем пустой список
             return []
-        sub = obj.subcategories.filter(is_active=True) # обращаемся ко всем активным подкатегориям
+        sub = obj.subcategories.all() # обращаемся ко всем активным подкатегориям
         # рекурсивно вызываем CategorySerializer и передаем в контекст уровень вложенности
         return CategorySerializer(sub, many=True, context={"level": level + 1}).data or []
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для модели Review.
+
+    Преобразует объекты Review <-> JSON.
+    """
+    class Meta:
+        model = Review
+        fields = [
+            "author",
+            "email",
+            "text",
+            "rate",
+            "date"
+        ]

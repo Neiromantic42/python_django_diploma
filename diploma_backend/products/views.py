@@ -1,17 +1,47 @@
 import logging
+from rest_framework import status
 from django.db.models.functions import Coalesce
-from rest_framework.viewsets import ModelViewSet
 from django.core.paginator import Paginator
-from django.db.models import Count
+from django.db.models import Count, Prefetch
 from django.db.models import  Avg
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.generics import ListAPIView
-from .models import Product, Category, Tag
-from .serializers import ProductSerializer, CategorySerializer
+from rest_framework.generics import (
+    ListAPIView,
+    RetrieveAPIView,
+    CreateAPIView
+)
+from .models import Product, Category, Tag, Review
+from .serializers import (
+    ProductSerializer,
+    CategorySerializer,
+    ProductDetailSerializer,
+    ReviewSerializer,
+)
+
+
 
 
 logger = logging.getLogger(__name__) # Создаем логгер
+
+
+class ProductDetailView(RetrieveAPIView):
+    """
+    представление на основе класса
+
+    обрабатывает запрос на получение одного товара
+    """
+    queryset = (
+        Product
+        .objects
+        .filter(archived=False)
+        .select_related("category")
+        .prefetch_related('specifications', 'images', 'reviews', 'tags')
+        .annotate( # Добавляем в qs вычисляемые поля:
+            avg_rating = Avg('reviews__rate') # Средний рейтинг
+        )
+    )
+    serializer_class = ProductDetailSerializer
 
 
 class ProductsLimitedListView(ListAPIView):
@@ -25,6 +55,10 @@ class ProductsLimitedListView(ListAPIView):
         .order_by('-date')
         .select_related("sale", "category")
         .prefetch_related('tags', 'images', "reviews")
+        .annotate( # Добавляем в qs вычисляемые поля:
+            reviews_count = Count("reviews"), # Кол-во отзывов
+            avg_rating = Avg("reviews__rate") # Средний рейтинг
+        )
     )[:16]
     serializer_class = ProductSerializer
 
@@ -33,7 +67,18 @@ class ProductCategoryListView(ListAPIView):
     """
     Представление для получения категорий товаров
     """
-    queryset = Category.objects.filter(is_active=True, parent=None)
+    queryset = (
+        Category
+        .objects
+        .filter(is_active=True, parent=None)
+        .select_related("image") # В одном запросе загружаем связанные картинки
+        .prefetch_related(
+            Prefetch(
+                'subcategories',
+                queryset=Category.objects.filter(is_active=True)
+            )
+        )
+    )
     serializer_class = CategorySerializer
 
 
@@ -45,8 +90,12 @@ class ProductsPopularListView(ListAPIView):
         Product
         .objects
         .filter(archived=False, is_limited=False, is_banner=False)
-        .order_by("sort_index", "-purchases_count")[:8]
-    )
+        .order_by("sort_index", "-purchases_count")
+        .annotate( # Добавляем в qs вычисляемые поля:
+            reviews_count = Count("reviews"), # Кол-во отзывов
+            avg_rating = Avg("reviews__rate") # Средний рейтинг
+        )
+    )[:8]
     serializer_class = ProductSerializer
 
 
@@ -58,8 +107,12 @@ class ProductsBannersListView(ListAPIView):
         Product
         .objects
         .filter(is_limited=False, is_banner=True)
-        .order_by('-date')[:3]
-    )
+        .order_by('-date')
+        .annotate(  # Добавляем в qs вычисляемые поля:
+            reviews_count=Count("reviews"),  # Кол-во отзывов
+            avg_rating=Avg("reviews__rate")  # Средний рейтинг
+        )
+    )[:3]
     serializer_class = ProductSerializer
 
 
@@ -69,7 +122,17 @@ def product_catalog(request):
     Представление на основе функции, обслуживает страницу catalog
     """
     # получаем все доступные продукты
-    products = Product.objects.filter(archived=False)
+    products = (
+        Product
+        .objects
+        .filter(archived=False)
+        .select_related("sale", "category")
+        .prefetch_related('tags', 'images')
+        .annotate(  # Добавляем в qs вычисляемые поля:
+            reviews_count=Count("reviews"),  # Кол-во отзывов
+            avg_rating=Coalesce(Avg("reviews__rate"), 0.0)  # Средний рейтинг
+        )
+    )
 
     # получаем все фильтры из строки запроса
     filter_name = request.GET.get('filter[name]', '')
@@ -132,19 +195,19 @@ def product_catalog(request):
     elif sort=='price' and sort_type=='dec':
         products = products.order_by('-price')
     elif sort=='reviews' and sort_type=='dec':
-        products = products.annotate(review_count=Count('reviews'))
-        products = products.order_by('-review_count')
+        # products = products.annotate(review_count=Count('reviews'))
+        products = products.order_by('-reviews_count')
     elif sort=='reviews' and sort_type=='inc':
-        products = products.annotate(review_count=Count('reviews'))
-        products = products.order_by('review_count')
+        # products = products.annotate(review_count=Count('reviews'))
+        products = products.order_by('reviews_count')
     elif sort=='date' and sort_type=='inc':
         products = products.order_by('date')
     elif sort=='date' and sort_type=='dec':
         products = products.order_by('-date')
     # сортировка по рейтингу
     elif sort=='rating':
-        products = products.annotate(
-            avg_rating=Coalesce(Avg('reviews__rate'), 0.0))
+        # products = products.annotate(
+        #     avg_rating=Coalesce(Avg('reviews__rate'), 0.0))
         if sort_type=='dec':
             # по убыванию среднего рейтинга
             products = products.order_by('-avg_rating')
@@ -180,7 +243,6 @@ def tags_popular(request):
     category = request.GET.get('category', None)
 
     if category:
-        logger.info(f"Категория: {category}")
         # получаем все товары относящиеся к переданной категории
         products = Product.objects.filter(category_id=category)
         # получаем все теги от продуктов с переданной категорией
@@ -202,3 +264,28 @@ def tags_popular(request):
         }
         for tag in tags
     ])
+
+class ProductReviewCreateView(CreateAPIView):
+    """
+    представление на основе класса CreateAPIView
+
+    Обеспечивает создание отзыва о конкретном товаре
+    """
+    serializer_class = ReviewSerializer
+
+    def perform_create(self, serializer):
+        """
+        переопределяем родительский метод perform_create
+
+        он сохранит и вернет отзыв о конкретном товаре
+        """
+        product_pk = self.kwargs['id']
+        product = Product.objects.get(pk=product_pk)
+        serializer.save(product=product)
+
+    def create(self, request, *args, **kwargs):
+        super().create(request, *args, **kwargs)
+        product_pk = self.kwargs['id']
+        reviews = Review.objects.filter(product=product_pk)
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
