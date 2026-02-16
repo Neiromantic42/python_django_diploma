@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'frontend', # HTML, шаблоны и статика
-    'products' # API и модели товаров
+    'products.apps.ProductsConfig', # API и модели товаров
+    'phonenumber_field', # приложение для валидации номера телефона
+    'users.apps.UsersConfig', # приложение для регистрации пользователей
 ]
 
 MIDDLEWARE = [

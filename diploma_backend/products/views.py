@@ -4,6 +4,7 @@ from django.db.models.functions import Coalesce
 from django.core.paginator import Paginator
 from django.db.models import Count, Prefetch
 from django.db.models import  Avg
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.generics import (
@@ -280,7 +281,8 @@ class ProductReviewCreateView(CreateAPIView):
         он сохранит и вернет отзыв о конкретном товаре
         """
         product_pk = self.kwargs['id']
-        product = Product.objects.get(pk=product_pk)
+        queryset = Product.objects
+        product = get_object_or_404(queryset, id=product_pk)
         serializer.save(product=product)
 
     def create(self, request, *args, **kwargs):
