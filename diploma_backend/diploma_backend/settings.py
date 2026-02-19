@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'products.apps.ProductsConfig', # API и модели товаров
     'phonenumber_field', # приложение для валидации номера телефона
     'users.apps.UsersConfig', # приложение для регистрации пользователей
+    'basket.apps.BasketConfig', # приложение - корзина
 ]
 
 MIDDLEWARE = [

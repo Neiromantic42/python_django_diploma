@@ -1,5 +1,6 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Profile
+from .models import Profile, ImagesProfile
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -36,6 +37,14 @@ class ProfileSerializer(serializers.ModelSerializer):
             "phone",
             "avatar"
         ]
+
+    def validate_email(self, value):
+        if (User.objects.filter(email=value)
+                .exclude(pk=self.instance.user.pk if self.instance else None)
+                .exists()
+        ):
+            raise serializers.ValidationError(f"Пользователь с таким email: {value} уже зарегистрирован")
+        return value
 
     def to_representation(self, instance: Profile):
         """
@@ -125,3 +134,50 @@ class ProfileSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+
+class AvatarSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для Аватар
+    """
+
+    avatar = serializers.ImageField(source='src')
+
+    class Meta:
+        model = ImagesProfile
+        fields = [
+            'avatar',
+            'alt'
+        ]
+
+    def validate_avatar(self, value):
+        max_size = 2 * 1024 * 1024
+
+        if value.size > max_size:
+            raise serializers.ValidationError("Размер файла не должен превышать 2мб")
+
+        return value
+
+
+class PasswordSerializer(serializers.Serializer):
+    """
+    Сериализатор для обновления пароля
+    """
+    currentPassword = serializers.CharField(write_only=True)
+    newPassword = serializers.CharField(write_only=True, max_length=8, min_length=3)
+
+    def validate_currentPassword(self, value):
+        user = self.context['request'].user # получаем текущего юзера из контекста
+        # проверяем текущий пароль объекта юзер и сравниваем с переданный в запросе
+        if not user.check_password(value):
+            # если совпадений нет бросам исключение
+            raise serializers.ValidationError("Текущий пароль неверный")
+        return value
+
+    def update(self, instance: User, validated_data):
+        # хешируем новый пароль методом обьекта User set_password
+        instance.set_password(validated_data['newPassword'])
+        instance.save() # сохраняем новы пароль
+        return instance
+
+

@@ -31,6 +31,7 @@ class Profile(models.Model):
     phone = PhoneNumberField(
         null=True,
         blank=False,
+        unique=True,
         region="RU",
         verbose_name="Телефон"
     )

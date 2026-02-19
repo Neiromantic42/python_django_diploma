@@ -29,6 +29,7 @@ urlpatterns = [
     path('', include('frontend.urls')), # подключает все фронтенд-шаблоны
     path('api/', include('products.urls')), # подключаем все пути приложения products
     path('api/', include('users.urls')), # подключаем все пути приложения users
+    path('api/', include('basket.urls')), # подключаем все пути прилодения basket
 ]
 
 if settings.DEBUG:
