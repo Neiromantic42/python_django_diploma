@@ -19,17 +19,8 @@ from .models import Basket
 from .serializers import (
     BasketSerializer
 )
-#
-# class BasketProductsListApiView(ListAPIView):
-#     """
-#     Представление для получения корзины, текущего юзера
-#
-#     со всеми товарами\позициями
-#     """
-#     serializer_class = BasketSerializer
-#
-#     def get_queryset(self):
-#         return Basket.objects.filter(user=self.request.user)
+
+
 
 
 class BasketProductsListApiView(APIView):
