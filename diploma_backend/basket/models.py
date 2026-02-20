@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from products.models import Product
 from django.db import models
 
+
 class Basket(models.Model):
     """
     Модель Basket представляет одну позицию в корзине пользователя.

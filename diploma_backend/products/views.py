@@ -52,7 +52,7 @@ class ProductsLimitedListView(ListAPIView):
     queryset = (
         Product
         .objects
-        .filter(is_limited=True, archived=False)
+        .filter(is_limited=True, archived=False, count__gt=0)
         .order_by('-date')
         .select_related("sale", "category")
         .prefetch_related('tags', 'images', "reviews")
