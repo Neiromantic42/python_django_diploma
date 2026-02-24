@@ -1,5 +1,8 @@
 import logging
+from math import ceil
+
 from rest_framework import status
+from django.utils import timezone
 from django.db.models.functions import Coalesce
 from django.core.paginator import Paginator
 from django.db.models import Count, Prefetch
@@ -12,12 +15,13 @@ from rest_framework.generics import (
     RetrieveAPIView,
     CreateAPIView
 )
-from .models import Product, Category, Tag, Review
+from .models import Product, Category, Tag, Review, Sale
 from .serializers import (
     ProductSerializer,
     CategorySerializer,
     ProductDetailSerializer,
     ReviewSerializer,
+    SalesSerializer,
 )
 
 
@@ -52,7 +56,7 @@ class ProductsLimitedListView(ListAPIView):
     queryset = (
         Product
         .objects
-        .filter(is_limited=True, archived=False)
+        .filter(is_limited=True, archived=False, count__gt=0)
         .order_by('-date')
         .select_related("sale", "category")
         .prefetch_related('tags', 'images', "reviews")
@@ -265,6 +269,38 @@ def tags_popular(request):
         }
         for tag in tags
     ])
+
+
+@api_view(["GET"])
+def discounted_products(request):
+    """
+    Представление на основе функции, обслуживает страницу товаров со скидкой
+
+    GET /sales
+    """
+    current_data = timezone.now().date()
+    # получаем все активные скидки\акции Sale
+    queryset = Sale.objects.filter(date_from__lte=current_data, date_to__gte=current_data)
+    # получаем текущую страницу
+    current_page = int(request.GET.get('currentPage', 1))
+    # лимит товаров на 1 странице
+    limit = 10
+
+    paginator = Paginator(queryset, limit) # В пагинатор передаем qs и лимит страниц
+    last_page = paginator.num_pages # вычисляем последнюю страницу
+    sale_page = paginator.get_page(current_page) # получаем только товары с переданной в запросе страницы
+
+    # В сериализатор передаем обьекты Sale (акции с товарами по скидке)
+    serializer = SalesSerializer(sale_page, many=True)
+
+    return Response({
+        "items":serializer.data,
+        "currentPage": current_page,
+        "lastPage": last_page
+    })
+
+
+
 
 class ProductReviewCreateView(CreateAPIView):
     """

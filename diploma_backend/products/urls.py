@@ -8,6 +8,7 @@ from .views import (
     ProductsBannersListView,
     product_catalog, # функция представления, для обработки запроса catalog
     tags_popular, # функция представления, для обработки запроса GET /tags
+    discounted_products, # функция представления, для обработки запроса GET /sale
     ProductDetailView, # представление для обработки запроса GET /product{id}
     ProductReviewCreateView, # представление обрабатывает запрос: создание отзыва
 )
@@ -27,4 +28,5 @@ urlpatterns = [
     path('tags/', tags_popular, name='tags_popular'),
     path('product/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
     path('product/<int:id>/reviews', ProductReviewCreateView.as_view(), name='product_create_review'),
+    path('sales', discounted_products, name='sales_products')
 ]
