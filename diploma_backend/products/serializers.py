@@ -1,6 +1,6 @@
 from django.db.models import Avg
 from rest_framework import serializers  # Импортируем модуль сериализаторов DRF
-from .models import Product, Category, Review
+from .models import Product, Category, Review, Sale
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -210,3 +210,69 @@ class ReviewSerializer(serializers.ModelSerializer):
             "rate",
             "date"
         ]
+
+
+class SalesSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для модели Sale
+
+    Преобразует объекты Sale <-> JSON
+    Используется для получения сериализованых обьектов Sale(скидок\акций с товарами)
+    """
+    id = serializers.SerializerMethodField()
+    price = serializers.SerializerMethodField()
+    salePrice = serializers.FloatField(source="sale_price")
+    dateFrom = serializers.SerializerMethodField(source="date_from")
+    dateTo = serializers.SerializerMethodField(source="date_to")
+    images = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Sale
+        fields = [
+            "id",
+            "price",
+            "salePrice",
+            "dateFrom",
+            "dateTo",
+            "images"
+        ]
+
+    def get_id(self, obj: Sale):
+        """
+        Метод вернет id товара сос кидкой
+        """
+        if obj.product:
+            return str(obj.product.pk)
+
+
+    def get_price(self, obj: Sale):
+        """
+        Метод вернет цену(price) без учета скидки
+        """
+        if hasattr(obj, 'product') and obj.product:
+            return float(obj.product.price)
+        return None
+
+
+    def get_dateFrom(self, obj: Sale):
+        # приводим дату к требуемому сваггер виду
+        return obj.date_from.strftime("%m-%d") if obj.date_from else None
+
+    def get_dateTo(self, obj: Sale):
+        # приводим дату к требуемому сваггер виду
+        return obj.date_to.strftime("%m-%d") if obj.date_to else None
+
+
+    def get_images(self, obj: Sale):
+        """
+        Метод вернет список изображений в формате [{"src": url, "alt": name}]
+        """
+        if obj.product and obj.product.images.exists():
+            return [
+                {
+                    "src": img.src.url,
+                    "alt": img.alt or "",
+                }
+                for img in obj.product.images.all()
+            ]
+        return []
