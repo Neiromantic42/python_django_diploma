@@ -1,6 +1,4 @@
 import logging
-from math import ceil
-
 from rest_framework import status
 from django.utils import timezone
 from django.db.models.functions import Coalesce

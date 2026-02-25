@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'phonenumber_field', # приложение для валидации номера телефона
     'users.apps.UsersConfig', # приложение для регистрации пользователей
     'basket.apps.BasketConfig', # приложение - корзина
+    'orders.apps.OrdersConfig' # приложение - заказы
 ]
 
 MIDDLEWARE = [
