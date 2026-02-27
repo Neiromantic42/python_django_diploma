@@ -81,5 +81,4 @@ def order_detail(request, id):
             # после того как заказ состоялся\обновился\подтвердился
             # удаляем товары из корзины
             Basket.objects.filter(user=request.user).delete()
-
             return Response({"orderId": order.id})
