@@ -18,47 +18,60 @@ import logging
 logger = logging.getLogger(__name__) # Создаем логгер
 
 
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def order_create(request):
-    """
-    Создание заказа с товарами
-    """
-    user = request.user
-    logger.info(f"Создаём заказ для пользователя: {user}")
+    if request.method == 'POST':
+        """
+        Создание заказа с товарами
+        """
+        user = request.user
+        logger.info(f"Создаём заказ для пользователя: {user}")
 
-    products_data = request.data
-    logger.info(f"Данные от фронта: {products_data}")
+        products_data = request.data
+        logger.info(f"Данные от фронта: {products_data}")
 
-    serializer = OrderCreateSerializer(
-        data={'products': products_data},
-        context={'request': request}
-    )
-    serializer.is_valid(raise_exception=True)
-    order = serializer.save()
+        serializer = OrderCreateSerializer(
+            data={'products': products_data},
+            context={'request': request}
+        )
+        serializer.is_valid(raise_exception=True)
+        order = serializer.save()
 
-    return Response({"orderId": order.id})
+        return Response({"orderId": order.id})
 
+    elif request.method == 'GET':
+        """
+        Получение списка заказов текущего юзера
+        """
+        current_user = request.user
+        logger.info(f"Текущий юзер: {current_user}")
+        orders = Order.objects.filter(user=current_user, status='accepted').all()
+        serializer = OrderDetailSerializer(
+            orders,
+            many=True
+        )
+        return Response(serializer.data)
 
 
 @api_view(['GET', 'POST'])
 def order_detail(request, id):
-    """
-    Представление для получения конкретного заказа по 'GET' - запросу
-    По 'POST' - запросу обновляем заказ согласно данным из тела запроса
-    """
-    # Если метод запроса GET, то возвращаем конкретный заказ
-    if request.method == 'GET':
-        order_pk = id
-        logger.info(f"Запрошен заказ с id: {order_pk}")
-        logger.info(f"Заказчик-текущий юзер: {request.user}")
-        order = get_object_or_404(Order, pk=order_pk)
-        serializer = OrderDetailSerializer(order)
+    with transaction.atomic():
+        """
+        Представление для получения конкретного заказа по 'GET' - запросу
+        По 'POST' - запросу обновляем заказ согласно данным из тела запроса
+        """
+        # Если метод запроса GET, то возвращаем конкретный заказ
+        if request.method == 'GET':
+            order_pk = id
+            logger.info(f"Запрошен заказ с id: {order_pk}")
+            logger.info(f"Заказчик-текущий юзер: {request.user}")
+            order = get_object_or_404(Order, pk=order_pk)
+            serializer = OrderDetailSerializer(order)
 
-        return Response(serializer.data)
-    # Иначе, если запрос POST то,
-    # обновляем данные заказа на введенные пользователем
-    elif request.method == 'POST':
-        with transaction.atomic():
+            return Response(serializer.data)
+        # Иначе, если запрос POST то,
+        # обновляем данные заказа на введенные пользователем
+        elif request.method == 'POST':
             order = get_object_or_404(Order, pk=id)
             logger.info(f"Данные заказа от фронта: {request.data}")
             serializer = ConfirmOrderSerializer(
