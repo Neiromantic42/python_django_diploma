@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'frontend', # HTML, шаблоны и статика
     'products.apps.ProductsConfig', # API и модели товаров
     'phonenumber_field', # приложение для валидации номера телефона
+    'django_cleanup.apps.CleanupConfig', # приложение для удаления не актуальных медиа
     'users.apps.UsersConfig', # приложение для регистрации пользователей
     'basket.apps.BasketConfig', # приложение - корзина
-    'orders.apps.OrdersConfig' # приложение - заказы
+    'orders.apps.OrdersConfig', # приложение - заказы
+    'payment.apps.PaymentConfig', # приложение - оплата
 ]
 
 MIDDLEWARE = [
@@ -131,7 +133,7 @@ frontend_static_path = BASE_DIR / 'diploma-frontend' / 'frontend' / 'static'
 # STATICFILES_DIRS добавляем только если путь реально существует
 STATICFILES_DIRS = [frontend_static_path] if frontend_static_path.exists() else []
 
-
+# Настойка логирования
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -145,3 +147,31 @@ LOGGING = {
         "level": "INFO",
     },
 }
+
+# URL брокера (Redis)
+# Celery будет подключаться к Redis для получения задач
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+# localhost:6379 - адрес Redis сервера
+# /0 - номер базы данных Redis (0-15)
+
+# Где хранить результаты выполнения задач
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+# Часовой пояс (такой же, как TIME_ZONE)
+CELERY_TIMEZONE = 'UTC'
+
+# Принимать задачи в формате JSON
+CELERY_ACCEPT_CONTENT = ['json']
+
+# Сериализация задач в JSON
+CELERY_TASK_SERIALIZER = 'json'
+
+# Результаты тоже в JSON
+CELERY_RESULT_SERIALIZER = 'json'
+
+# Показывать статус задачи (PENDING, STARTED, SUCCESS, FAILURE)
+CELERY_TASK_TRACK_STARTED = True
+
+# Максимальное время выполнения задачи — 5 минут
+# Если задача зависнет дольше, Celery её принудительно завершитт
+CELERY_TASK_TIME_LIMIT = 5 * 60

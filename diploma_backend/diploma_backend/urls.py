@@ -31,6 +31,7 @@ urlpatterns = [
     path('api/', include('users.urls')), # подключаем все пути приложения users
     path('api/', include('basket.urls')), # подключаем все пути приложения basket
     path('api/', include('orders.urls')), # подключаем все пути приложения orders
+    path('api/', include('payment.urls')), # подключаем все пути приложения payment
 ]
 
 if settings.DEBUG:

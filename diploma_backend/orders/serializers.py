@@ -101,6 +101,9 @@ class OrderDetailSerializer(serializers.ModelSerializer):
     totalCost = serializers.SerializerMethodField()
     products = serializers.SerializerMethodField()
 
+    paymentStatus = serializers.SerializerMethodField()
+    paymentError = serializers.SerializerMethodField()
+
     class Meta:
         model = Order
         fields = [
@@ -115,7 +118,9 @@ class OrderDetailSerializer(serializers.ModelSerializer):
             "status",
             "city",
             "address",
-            "products"
+            "products",
+            "paymentStatus",
+            "paymentError"
         ]
 
 
@@ -177,6 +182,24 @@ class OrderDetailSerializer(serializers.ModelSerializer):
         return OrderProductsSerializer(order_products, many=True).data
 
 
+    def get_paymentStatus(self, obj: Order):
+        """
+        Метод вернет поледний статус оплаты
+        """
+        last_payment = obj.payments.order_by('-created_at').first()
+        return last_payment.status_payment if last_payment else None
+
+    def get_paymentError(self, obj: Order):
+        """
+        Метод вернет ошибку оплаты если была
+        """
+        last_payment = obj.payments.filter(status_payment='failed').order_by('-created_at').first()
+        if last_payment and last_payment.status_payment == 'failed':
+            return last_payment.error_message
+        return None
+
+
+
 class ConfirmOrderSerializer(serializers.ModelSerializer):
     """
     Сериализатор для подтверждения\обновления заказа
@@ -201,9 +224,12 @@ class ConfirmOrderSerializer(serializers.ModelSerializer):
         instance.phone = validated_data.get('phone', instance.phone)
         instance.email = validated_data.get('email', instance.email)
         instance.delivery_type = validated_data.get('deliveryType', instance.delivery_type)
-        instance.status = 'accepted'
+        # Ставим 'accepted' только если статус 'pending'!
+        if instance.status == 'pending':
+            instance.status = 'accepted'
         instance.city = validated_data.get('city', instance.city)
         instance.address = validated_data.get('address', instance.address)
         instance.payment_type = validated_data.get('paymentType', instance.payment_type)
         instance.save() # сохраняем изменения
         return instance
+        # тут еще нужно добавить лолгику расчета стоимочсти доставки + к тотал_кост

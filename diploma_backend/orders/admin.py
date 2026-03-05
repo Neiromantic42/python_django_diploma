@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Order, OrderProduct
+from payment.models import Payment
 
 class OrderProductInline(admin.TabularInline):
     """
@@ -9,6 +10,14 @@ class OrderProductInline(admin.TabularInline):
     extra = 0
     readonly_fields = ("price",)
     can_delete = True
+
+class OrderPaymentInline(admin.TabularInline):
+    """
+    Inline для отображения попыток оплаты в заказе внутри Order
+    """
+    model = Payment
+    extra = 0
+    readonly_fields = ('created_at',)
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
@@ -31,7 +40,7 @@ class OrderAdmin(admin.ModelAdmin):
     )
     list_filter = ("status", "delivery_type", "payment_type", "created_at")
     search_fields = ("full_name", "email", "phone", "city", "address", "user__username")
-    inlines = [OrderProductInline] # показываем связанные товары
+    inlines = [OrderProductInline, OrderPaymentInline] # показываем связанные товары
 
     @admin.display(description="Имя клиента")
     def full_name_display(self, odj: Order):

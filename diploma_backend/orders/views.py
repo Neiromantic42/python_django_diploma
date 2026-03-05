@@ -45,7 +45,7 @@ def order_create(request):
         """
         current_user = request.user
         logger.info(f"Текущий юзер: {current_user}")
-        orders = Order.objects.filter(user=current_user, status='accepted').all()
+        orders = Order.objects.filter(user=current_user).order_by('-created_at')
         serializer = OrderDetailSerializer(
             orders,
             many=True
