@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Order, OrderProduct
+from .models import Order, OrderProduct, DeliverySettings
 from payment.models import Payment
 
 class OrderProductInline(admin.TabularInline):
@@ -61,4 +61,18 @@ class OrderProductAdmin(admin.ModelAdmin):
     )
     list_filter = ("order", "product")
     search_fields = ("product__title", "order__id")
+
+@admin.register(DeliverySettings)
+class DeliverySettingsAdmin(admin.ModelAdmin):
+    """
+    Админка для настройки стоимостей доставки
+    """
+    list_display = (
+        "express_price",
+        "free_threshold",
+        "standard_price",
+    )
+    list_filter = ()
+    search_fields = ()
+
 

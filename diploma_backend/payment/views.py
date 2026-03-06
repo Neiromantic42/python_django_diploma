@@ -44,6 +44,6 @@ def payment_create(request, id):
     task = process_payment.delay(payment.id)
 
     return Response({
-        "message": "Ждем подтверждения оплаты от платежнйо системы",
+        "message": "Ждем подтверждения оплаты от платежной системы",
         "paymentId": payment.id
     }, status=202)

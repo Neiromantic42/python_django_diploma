@@ -3,7 +3,7 @@ from django.db.models.aggregates import Avg
 from rest_framework import serializers  # Импортируем модуль сериализаторов DRF
 from django.contrib.auth.models import User
 from products.models import Product
-from .models import Order, OrderProduct
+from .models import Order, OrderProduct, DeliverySettings
 from products.serializers import ProductSerializer
 
 
@@ -39,8 +39,14 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         for item in products_data:
             product = Product.objects.get(pk=item['id'])
             count = item['count']
-            price = product.price
+            # получаем цену со скидкой
+            if hasattr(product, 'sale') and product.sale:
+                price = product.sale.sale_price
+            else:
+                price = product.price
+
             total_cost += price * count
+
             OrderProduct.objects.create(
                 order=order,
                 product=product,
@@ -204,32 +210,53 @@ class ConfirmOrderSerializer(serializers.ModelSerializer):
     """
     Сериализатор для подтверждения\обновления заказа
     """
+    fullName = serializers.CharField(source='full_name', required=False)
+    deliveryType = serializers.CharField(source='delivery_type', required=False)
+    paymentType = serializers.CharField(source='payment_type', required=False)
+    totalCost = serializers.DecimalField(max_digits=10, decimal_places=2, source='total_cost')
+
     class Meta:
         model = Order
         fields = [
-            "full_name",
+            "fullName",
             "email",
             "phone",
-            "delivery_type",
-            "payment_type",
+            "deliveryType",
+            "paymentType",
             "status",
+            "totalCost",
             "city",
             "address",
         ]
 
     def update(self, instance, validated_data):
+        """
+        Метод окончательно обновит данные заказа
+        """
         # instance - существующий объект из БД Order
         # validated_data - провалидированные данные из запроса
-        instance.full_name = validated_data.get('fullName', instance.full_name)
+        instance.full_name = validated_data.get('full_name', instance.full_name)
         instance.phone = validated_data.get('phone', instance.phone)
         instance.email = validated_data.get('email', instance.email)
-        instance.delivery_type = validated_data.get('deliveryType', instance.delivery_type)
+        instance.delivery_type = validated_data.get('delivery_type', instance.delivery_type)
         # Ставим 'accepted' только если статус 'pending'!
         if instance.status == 'pending':
             instance.status = 'accepted'
+        # получаем актуальные настройки для расчета стоимости доставки
+        settings_delivery = DeliverySettings.objects.order_by('id').last()
+        # получаем общую стоимость товаров из тела запроса
+        order_total_cost = validated_data.get('total_cost', instance.total_cost)
+        # рассчитываем стоимость доставки и присовокупляем ее к общей стоимости заказа
+        if instance.delivery_type == "express":
+            instance.total_cost = order_total_cost + settings_delivery.express_price
+        elif instance.delivery_type == "ordinary":
+            # проверяем порог бесплатной доставки
+            if order_total_cost > settings_delivery.free_threshold:
+                instance.total_cost = order_total_cost
+            else:
+                instance.total_cost = order_total_cost + settings_delivery.standard_price
         instance.city = validated_data.get('city', instance.city)
         instance.address = validated_data.get('address', instance.address)
-        instance.payment_type = validated_data.get('paymentType', instance.payment_type)
+        instance.payment_type = validated_data.get('payment_type', instance.payment_type)
         instance.save() # сохраняем изменения
         return instance
-        # тут еще нужно добавить лолгику расчета стоимочсти доставки + к тотал_кост

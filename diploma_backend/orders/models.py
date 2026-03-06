@@ -19,7 +19,11 @@ class Order(models.Model):
         max_length=20,
         blank=True,
         verbose_name="тип доставки",
-        default="free"
+        choices=[
+            ('ordinary', 'Обычная доставка - 200р'),
+            ('express', 'Быстрая доставка - 500 р')
+        ],
+        default="ordinary"
     )
     payment_type = models.CharField(
         max_length=20,
@@ -54,3 +58,30 @@ class OrderProduct(models.Model):
         decimal_places=2,
         verbose_name='цена товара на момент покупки'
     )
+
+class DeliverySettings(models.Model):
+    """
+    Модель настройки стоимости доставки для админки
+    """
+    express_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=500,
+        verbose_name="Стоимость express(быстрой) доставки"
+    )
+    free_threshold = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=2000,
+        verbose_name='Порог стоимости товара для бесплатной доставки'
+    )
+    standard_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=200,
+        verbose_name='Стоимость обычной\стандартной доставки'
+    )
+
+    class Meta:
+        verbose_name = "Настройка доставки"
+        verbose_name_plural = "Настройки доставки"

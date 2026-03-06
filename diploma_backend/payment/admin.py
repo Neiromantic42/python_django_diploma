@@ -12,6 +12,7 @@ class PaymentAdmin(admin.ModelAdmin):
         'id',
         'order',
         'card_number',
+        'card_holder_name',
         'month',
         'year',
         'created_at',
@@ -19,8 +20,8 @@ class PaymentAdmin(admin.ModelAdmin):
         'status_payment',
         'short_error_message'
     )
-    list_filter = ('status_payment', 'created_at')
-    search_fields = ('order__id', 'card_number')
+    list_filter = ('status_payment', 'created_at', 'card_holder_name')
+    search_fields = ('order__id', 'card_number', 'card_holder_name')
 
     @admin.display(description="Короткий текст ошибки")
     def short_error_message(self, obj: Payment):

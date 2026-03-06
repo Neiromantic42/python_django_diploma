@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from datetime import datetime
 from payment.models import Payment
+import re
 
 
 class PaymentsSerializer(serializers.ModelSerializer):
@@ -10,15 +11,34 @@ class PaymentsSerializer(serializers.ModelSerializer):
     И валидации данных оплаты
     """
     number = serializers.CharField(source='card_number')
+    name = serializers.CharField(source='card_holder_name')
 
     class Meta:
         model = Payment
         fields = [
             'number',
+            'name',
             'month',
             'year',
             'code',
         ]
+
+    def validate_name(self, value):
+        """
+        Валидируем ФИО держателя карты
+        """
+        # Длина имени не может быть меньше 2х слов
+        value = value.strip() # убираем лишние пробелы в конце и начале строки
+        words = value.split() # разделяем по пробелу в середине строки
+        if len(words) < 2:
+            raise serializers.ValidationError(
+                "недостаточно данных в поле ФИО"
+            )
+        # Только буквы, пробелы, дефисы, апострофы
+        if not re.match(r'^[A-Za-zА-Яа-яЁё\s\-\']+$', value):
+            raise serializers.ValidationError("ФИО может содержать только буквы")
+
+        return value
 
 
     def validate_number(self, value):

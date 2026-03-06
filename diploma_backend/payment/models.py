@@ -22,6 +22,13 @@ class Payment(models.Model):
         null=False,
         blank=False,
     )
+    card_holder_name = models.CharField(
+        max_length=100,
+        blank=False,
+        null=True,
+        default='',
+        verbose_name="ФИО держателя карты"
+    )
     month = models.CharField(
         max_length=2,
         validators=[RegexValidator(r'^(0[1-9]|1[0-2])$', message='Месяц должен быть от 01 до 12')],
