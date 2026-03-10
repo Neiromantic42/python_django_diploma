@@ -1,5 +1,5 @@
 from django.urls import path
-from rest_framework.routers import DefaultRouter
+
 
 from .views import (
     ProductsLimitedListView,
@@ -12,11 +12,6 @@ from .views import (
     ProductDetailView, # представление для обработки запроса GET /product{id}
     ProductReviewCreateView, # представление обрабатывает запрос: создание отзыва
 )
-
-
-# router = DefaultRouter()
-# router.register(r'limited', ProductsLimitedListView, basename="products_limited")
-
 
 urlpatterns = [
     # *router.urls,

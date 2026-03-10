@@ -2,7 +2,7 @@ import logging
 
 from rest_framework import status
 from rest_framework.response import Response
-from .models import Profile
+from .models import Profile, ImagesProfile
 from .serializers import (
     ProfileSerializer,
     AvatarSerializer,
@@ -40,7 +40,13 @@ class ProfileDetailView(RetrieveUpdateAPIView):
     def get_object(self):
         current_user = self.request.user
         logger.info(f"Текущий юзер: {current_user}")
-        profile = Profile.objects.get(user__username=current_user.username)
+        # пробуем получить профиль, если его нет — создаём
+        # profile = Profile.objects.get(user__username=current_user.username)
+        profile, created = Profile.objects.get_or_create(user=current_user)
+        if created:
+            logger.info(f"Создан новый профиль для пользователя {current_user.username}")
+            ImagesProfile.objects.create(user=current_user)
+            logger.info(f"Создан ImagesProfile для профиля {profile.id}")
         return profile
 
     def post(self, request, *args, **kwargs):
@@ -66,7 +72,15 @@ class AvatarUpdateApiView(UpdateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        return self.request.user.profile.images
+        # Проверяем, есть ли уже ImagesProfile, если нет — создаём
+        profile = self.request.user.profile
+        images, created = ImagesProfile.objects.get_or_create(
+            profile=profile
+        )
+        if created:
+            logger.info(f"Создан ImagesProfile для пользователя {self.request.user.username}")
+        return images
+
 
     def post(self, request, *args, **kwargs):
         logger.info(f"FILES: {request.FILES}")

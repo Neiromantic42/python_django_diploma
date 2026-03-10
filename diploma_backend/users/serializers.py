@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import Profile, ImagesProfile
+from phonenumber_field.serializerfields import PhoneNumberField
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -27,7 +28,8 @@ class ProfileSerializer(serializers.ModelSerializer):
     # Они позволяют сериализатору принять входящие данные
     fullName = serializers.CharField(required=False)
     email = serializers.EmailField(required=False)
-    avatar = serializers.DictField(required=False)
+    avatar = serializers.DictField(required=False, allow_null=True)
+    phone = PhoneNumberField(required=False, allow_blank=True, region='RU')
 
     class Meta:
         model = Profile
@@ -141,7 +143,7 @@ class AvatarSerializer(serializers.ModelSerializer):
     Сериализатор для Аватар
     """
 
-    avatar = serializers.ImageField(source='src')
+    avatar = serializers.ImageField(source='src', )
 
     class Meta:
         model = ImagesProfile

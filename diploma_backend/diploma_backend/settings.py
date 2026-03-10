@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'basket.apps.BasketConfig', # приложение - корзина
     'orders.apps.OrdersConfig', # приложение - заказы
     'payment.apps.PaymentConfig', # приложение - оплата
+    'accounts_auth.apps.AccountsAuthConfig', # приложение - регистрация, аутентификация
 ]
 
 MIDDLEWARE = [

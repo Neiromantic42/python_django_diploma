@@ -244,8 +244,11 @@ class ConfirmOrderSerializer(serializers.ModelSerializer):
             instance.status = 'accepted'
         # получаем актуальные настройки для расчета стоимости доставки
         settings_delivery = DeliverySettings.objects.order_by('id').last()
-        # получаем общую стоимость товаров из тела запроса
-        order_total_cost = validated_data.get('total_cost', instance.total_cost)
+        # Рассчитываем общую стоимость товара из продуктов заказа
+        order_total_cost = sum(
+            item.price * item.count
+            for item in instance.products.all()
+        )
         # рассчитываем стоимость доставки и присовокупляем ее к общей стоимости заказа
         if instance.delivery_type == "express":
             instance.total_cost = order_total_cost + settings_delivery.express_price

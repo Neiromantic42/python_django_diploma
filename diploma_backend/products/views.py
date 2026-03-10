@@ -23,8 +23,6 @@ from .serializers import (
 )
 
 
-
-
 logger = logging.getLogger(__name__) # Создаем логгер
 
 
