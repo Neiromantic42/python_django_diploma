@@ -1,29 +1,35 @@
 from django.contrib import admin
-from .models import Product, Category, Specification, Review, Tag, Image, Sale
+
+from .models import Category, Image, Product, Review, Sale, Specification, Tag
 
 
 class ImageInline(admin.StackedInline):
     model = Image
     extra = 1
 
+
 class SpecificationInline(admin.StackedInline):
     model = Specification
     extra = 1
 
+
 class ReviewInline(admin.StackedInline):
     model = Review
     extra = 0
+
 
 class SaleInline(admin.StackedInline):
     model = Sale
     extra = 0
     max_num = 1
 
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     """
     Настройка отображения модели Product в админке.
     """
+
     list_display = (
         "id",
         "title",
@@ -43,12 +49,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ("is_limited", "free_delivery", "category")
     search_fields = ("title", "description", "full_description", "is_banner")
     filter_horizontal = ("tags",)
-    inlines = [
-        ImageInline,
-        SpecificationInline,
-        SaleInline,
-        ReviewInline
-    ]
+    inlines = [ImageInline, SpecificationInline, SaleInline, ReviewInline]
 
     @admin.display(description="краткое описание товара")
     def short_description(self, obj):
@@ -69,15 +70,13 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ("title", "is_active")
 
 
-
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    list_display = ("name", )
-    search_fields = ("name", )
+    list_display = ("name",)
+    search_fields = ("name",)
 
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
     list_display = ("src", "alt")
-    search_fields = ("alt", )
-
+    search_fields = ("alt",)

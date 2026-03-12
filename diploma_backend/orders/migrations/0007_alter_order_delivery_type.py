@@ -6,13 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('orders', '0006_alter_deliverysettings_options'),
+        ("orders", "0006_alter_deliverysettings_options"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='order',
-            name='delivery_type',
-            field=models.CharField(blank=True, choices=[('ordinary', 'Обычная доставка - 200р'), ('express', 'Быстрая доставка - 500 р')], default='ordinary', max_length=20, verbose_name='тип доставки'),
+            model_name="order",
+            name="delivery_type",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("ordinary", "Обычная доставка - 200р"),
+                    ("express", "Быстрая доставка - 500 р"),
+                ],
+                default="ordinary",
+                max_length=20,
+                verbose_name="тип доставки",
+            ),
         ),
     ]

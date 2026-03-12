@@ -7,13 +7,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0014_alter_product_tags'),
+        ("products", "0014_alter_product_tags"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sale',
-            name='product',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='sale', to='products.product', verbose_name='Связь с моделью продуктов, один к одному'),
+            model_name="sale",
+            name="product",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="sale",
+                to="products.product",
+                verbose_name="Связь с моделью продуктов, один к одному",
+            ),
         ),
     ]

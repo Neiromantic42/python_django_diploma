@@ -14,25 +14,29 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf import settings
-from django.conf.urls.static import static
-from django.contrib import admin
-from django.urls import path, include
 
 import sys
 from pathlib import Path
+
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import include, path
+
 BASE_DIR = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(BASE_DIR.parent / 'diploma-frontend'))
+sys.path.insert(0, str(BASE_DIR.parent / "diploma-frontend"))
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('frontend.urls')), # подключает все фронтенд-шаблоны
-    path('api/', include('products.urls')), # подключаем все пути приложения products
-    path('api/', include('users.urls')), # подключаем все пути приложения users
-    path('api/', include('basket.urls')), # подключаем все пути приложения basket
-    path('api/', include('orders.urls')), # подключаем все пути приложения orders
-    path('api/', include('payment.urls')), # подключаем все пути приложения payment
-    path('api/', include('accounts_auth.urls')), # подключаем все пути приложения accounts_auth
+    path("admin/", admin.site.urls),
+    path("", include("frontend.urls")),  # подключает все фронтенд-шаблоны
+    path("api/", include("products.urls")),  # подключаем все пути приложения products
+    path("api/", include("users.urls")),  # подключаем все пути приложения users
+    path("api/", include("basket.urls")),  # подключаем все пути приложения basket
+    path("api/", include("orders.urls")),  # подключаем все пути приложения orders
+    path("api/", include("payment.urls")),  # подключаем все пути приложения payment
+    path(
+        "api/", include("accounts_auth.urls")
+    ),  # подключаем все пути приложения accounts_auth
 ]
 
 if settings.DEBUG:

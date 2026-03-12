@@ -1,16 +1,17 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Product(models.Model):
     """
     Модель Product представляет товар
     """
+
     title = models.CharField(max_length=255, db_index=True)
     category = models.ForeignKey(
         "Category",
         on_delete=models.CASCADE,
-        verbose_name="Связь один ко многим с категориями"
+        verbose_name="Связь один ко многим с категориями",
     )
     price = models.DecimalField(max_digits=10, decimal_places=2)
     count = models.PositiveIntegerField(default=0)
@@ -19,40 +20,41 @@ class Product(models.Model):
     full_description = models.TextField()
     free_delivery = models.BooleanField(default=False)
     tags = models.ManyToManyField(
-        'Tag',
+        "Tag",
         blank=True,
-        related_name='products',
-        verbose_name="связь многие ко многим с тегом продукта")
+        related_name="products",
+        verbose_name="связь многие ко многим с тегом продукта",
+    )
 
     is_limited = models.BooleanField(default=False)
     sort_index = models.PositiveIntegerField(
         default=50,
         verbose_name="Индекс популярности товара",
         help_text="Чем меньше значение, тем выше товар в топе."
-                  " При одинаковом индексе учитывается количество покупок."
+        " При одинаковом индексе учитывается количество покупок.",
     )
     purchases_count = models.PositiveIntegerField(
         default=0,
         verbose_name="количество покупок",
         help_text="Автоматически увеличивается при каждой покупке."
-                  " Редактировать вручную не требуется."
-                  " Но если очень хочется то можно."
+        " Редактировать вручную не требуется."
+        " Но если очень хочется то можно.",
     )
     archived = models.BooleanField(
         default=False,
         verbose_name="Архивация товара (скрыт/доступен для продажи)",
-        help_text = "Если включено, товар считается архивным и не отображается в каталоге для покупателей",
+        help_text="Если включено, товар считается архивным и не отображается в каталоге для покупателей",
     )
     is_banner = models.BooleanField(
         default=False,
         verbose_name="Продающие товары (banners)",
         help_text="Если включено, товар попадает в блок banners на главной странице."
-                  " Он же считается рекламным, продающим."
+        " Он же считается рекламным, продающим.",
     )
 
     class Meta:
-        verbose_name = 'Product'
-        verbose_name_plural = 'Products'
+        verbose_name = "Product"
+        verbose_name_plural = "Products"
 
     def __str__(self):
         return self.title
@@ -62,25 +64,21 @@ class Category(models.Model):
     """
     Модель Category представляет категории товара
     """
+
     title = models.CharField(max_length=100)
-    image = models.ForeignKey(
-        "Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL
-    )
+    image = models.ForeignKey("Image", null=True, blank=True, on_delete=models.SET_NULL)
     parent = models.ForeignKey(
-        'self',
+        "self",
         null=True,
         blank=True,
-        related_name='subcategories',
-        on_delete=models.CASCADE
+        related_name="subcategories",
+        on_delete=models.CASCADE,
     )
     is_active = models.BooleanField(
         default=True,
         verbose_name="Активная категория",
         help_text="Если True, категория отображается на сайте."
-                  " Если False — архивируется и не показывается."
+        " Если False — архивируется и не показывается.",
     )
 
     def __str__(self):
@@ -91,13 +89,14 @@ class Specification(models.Model):
     """
     Характеристика товара
     """
+
     product = models.ForeignKey(
-        Product,
-        on_delete=models.CASCADE,
-        related_name="specifications"
+        Product, on_delete=models.CASCADE, related_name="specifications"
     )
     name = models.CharField(max_length=255, verbose_name="Название характеристики")
-    value = models.CharField(max_length=1500, verbose_name="Полная характеристика товара")
+    value = models.CharField(
+        max_length=1500, verbose_name="Полная характеристика товара"
+    )
 
     class Meta:
         verbose_name = "Specification"
@@ -111,11 +110,12 @@ class Review(models.Model):
     """
     Модель Review - представляет собой отзывы на товар
     """
+
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
         related_name="reviews",
-        verbose_name="Связь с продуктом"
+        verbose_name="Связь с продуктом",
     )
     author = models.CharField(max_length=255)
     email = models.EmailField()
@@ -125,7 +125,7 @@ class Review(models.Model):
         validators=[
             MinValueValidator(1),
             MaxValueValidator(5),
-        ]
+        ],
     )
     date = models.DateTimeField(auto_now_add=True)
 
@@ -141,6 +141,7 @@ class Tag(models.Model):
     """
     Модель Tag - представляет тег товара(пример: "Gamin", "RGB", ""Sale)
     """
+
     name = models.CharField(max_length=25, unique=True, verbose_name="Название тега")
 
     class Meta:
@@ -155,6 +156,7 @@ class Image(models.Model):
     """
     Модель Image представляет собой картинки товаров
     """
+
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
@@ -162,10 +164,13 @@ class Image(models.Model):
         verbose_name="Связь с продуктом: один ко многим",
         null=True,
         blank=True,
-
     )
-    src = models.ImageField(upload_to='images/', verbose_name="Ссылка где лежит картинка")
-    alt = models.CharField(max_length=255, blank=True, verbose_name="Текстовое описание картинки")
+    src = models.ImageField(
+        upload_to="images/", verbose_name="Ссылка где лежит картинка"
+    )
+    alt = models.CharField(
+        max_length=255, blank=True, verbose_name="Текстовое описание картинки"
+    )
 
     class Meta:
         verbose_name = "Image"
@@ -179,16 +184,15 @@ class Sale(models.Model):
     """
     Модель Sale - представляет собой скидку на товар
     """
+
     product = models.OneToOneField(
         Product,
         on_delete=models.CASCADE,
-        related_name='sale', # явно указываем имя обратной связи
-        verbose_name="Связь с моделью продуктов, один к одному"
+        related_name="sale",  # явно указываем имя обратной связи
+        verbose_name="Связь с моделью продуктов, один к одному",
     )
     sale_price = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        verbose_name="Цена на товар со учетом скидки"
+        max_digits=10, decimal_places=2, verbose_name="Цена на товар со учетом скидки"
     )
     date_from = models.DateField(verbose_name="Дата начала акции\скидки")
     date_to = models.DateField(verbose_name="Дата конца акции\скидки")

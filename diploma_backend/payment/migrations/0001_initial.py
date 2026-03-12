@@ -10,22 +10,92 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('orders', '0004_alter_order_payment_type'),
+        ("orders", "0004_alter_order_payment_type"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Payment',
+            name="Payment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('card_number', models.CharField(max_length=16)),
-                ('month', models.CharField(max_length=2, validators=[django.core.validators.RegexValidator('^(0[1-9]|1[0-2])$', message='Месяц должен быть от 01 до 12')], verbose_name='Месяц годности карты')),
-                ('year', models.IntegerField(validators=[django.core.validators.MinValueValidator(26), django.core.validators.MaxValueValidator(36)], verbose_name='Дата годности карты (год)')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Дата попытки оплаты')),
-                ('code', models.CharField(max_length=3, validators=[django.core.validators.RegexValidator('^\\d{3}$', message='Код должен быть 3 цифры')], verbose_name='CVV / код безопасности')),
-                ('status_payment', models.CharField(choices=[('pending', 'В ожидании'), ('success', 'Оплачено'), ('failed', 'Ошибка')], default='pending', max_length=20, verbose_name='статус оплаты')),
-                ('error_message', models.TextField(blank=True, null=True, verbose_name='текст ошибки')),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='payments', to='orders.order', verbose_name='Попытки оплаты заказа')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("card_number", models.CharField(max_length=16)),
+                (
+                    "month",
+                    models.CharField(
+                        max_length=2,
+                        validators=[
+                            django.core.validators.RegexValidator(
+                                "^(0[1-9]|1[0-2])$",
+                                message="Месяц должен быть от 01 до 12",
+                            )
+                        ],
+                        verbose_name="Месяц годности карты",
+                    ),
+                ),
+                (
+                    "year",
+                    models.IntegerField(
+                        validators=[
+                            django.core.validators.MinValueValidator(26),
+                            django.core.validators.MaxValueValidator(36),
+                        ],
+                        verbose_name="Дата годности карты (год)",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Дата попытки оплаты"
+                    ),
+                ),
+                (
+                    "code",
+                    models.CharField(
+                        max_length=3,
+                        validators=[
+                            django.core.validators.RegexValidator(
+                                "^\\d{3}$", message="Код должен быть 3 цифры"
+                            )
+                        ],
+                        verbose_name="CVV / код безопасности",
+                    ),
+                ),
+                (
+                    "status_payment",
+                    models.CharField(
+                        choices=[
+                            ("pending", "В ожидании"),
+                            ("success", "Оплачено"),
+                            ("failed", "Ошибка"),
+                        ],
+                        default="pending",
+                        max_length=20,
+                        verbose_name="статус оплаты",
+                    ),
+                ),
+                (
+                    "error_message",
+                    models.TextField(
+                        blank=True, null=True, verbose_name="текст ошибки"
+                    ),
+                ),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="payments",
+                        to="orders.order",
+                        verbose_name="Попытки оплаты заказа",
+                    ),
+                ),
             ],
         ),
     ]

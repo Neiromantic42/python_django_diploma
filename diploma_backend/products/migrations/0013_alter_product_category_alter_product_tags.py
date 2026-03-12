@@ -7,18 +7,27 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0012_remove_product_rating'),
+        ("products", "0012_remove_product_rating"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='product',
-            name='category',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.category', verbose_name='Связь один ко многим с категориями'),
+            model_name="product",
+            name="category",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="products.category",
+                verbose_name="Связь один ко многим с категориями",
+            ),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='tags',
-            field=models.ManyToManyField(blank=True, related_name='tags', to='products.tag', verbose_name='связь многие ко многим с тегом продукта'),
+            model_name="product",
+            name="tags",
+            field=models.ManyToManyField(
+                blank=True,
+                related_name="tags",
+                to="products.tag",
+                verbose_name="связь многие ко многим с тегом продукта",
+            ),
         ),
     ]

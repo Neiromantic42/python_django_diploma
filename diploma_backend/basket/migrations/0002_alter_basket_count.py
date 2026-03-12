@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('basket', '0001_initial'),
+        ("basket", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='basket',
-            name='count',
-            field=models.PositiveIntegerField(default=0, verbose_name='Количество добавляемого товара'),
+            model_name="basket",
+            name="count",
+            field=models.PositiveIntegerField(
+                default=0, verbose_name="Количество добавляемого товара"
+            ),
         ),
     ]

@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('orders', '0002_alter_order_total_cost'),
+        ("orders", "0002_alter_order_total_cost"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='order',
-            name='delivery_type',
-            field=models.CharField(blank=True, default='free', max_length=20, verbose_name='тип доставки'),
+            model_name="order",
+            name="delivery_type",
+            field=models.CharField(
+                blank=True, default="free", max_length=20, verbose_name="тип доставки"
+            ),
         ),
     ]

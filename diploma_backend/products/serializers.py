@@ -1,6 +1,6 @@
-from django.db.models import Avg
 from rest_framework import serializers  # Импортируем модуль сериализаторов DRF
-from .models import Product, Category, Review, Sale
+
+from .models import Category, Product, Review, Sale
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -10,6 +10,7 @@ class ProductSerializer(serializers.ModelSerializer):
     Преобразует объекты Product <-> JSON.
     Используется для чтения, создания, обновления и удаления товаров
     """
+
     price = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
     category = serializers.SerializerMethodField()
@@ -18,9 +19,9 @@ class ProductSerializer(serializers.ModelSerializer):
     rating = serializers.SerializerMethodField()
     freeDelivery = serializers.BooleanField(source="free_delivery")
 
-    class Meta: # Класс конфигурации сериализатора
-        model = Product # Указываем, с какой моделью работает сериализатор
-        fields = [ # Перечисляем поля, которые попадут в JSON
+    class Meta:  # Класс конфигурации сериализатора
+        model = Product  # Указываем, с какой моделью работает сериализатор
+        fields = [  # Перечисляем поля, которые попадут в JSON
             "id",
             "category",
             "price",
@@ -33,18 +34,15 @@ class ProductSerializer(serializers.ModelSerializer):
             "tags",
             "reviews",
             "rating",
-
         ]
-
 
     def get_price(self, obj: Product):
         """
         Метод вернет цену(price) с учетом скидки, если она есть
         """
-        if hasattr(obj, 'sale') and obj.sale:
+        if hasattr(obj, "sale") and obj.sale:
             return obj.sale.sale_price
         return obj.price
-
 
     def get_images(self, odj: Product) -> list[dict]:
         """
@@ -54,17 +52,15 @@ class ProductSerializer(serializers.ModelSerializer):
             {
                 "src": img.src.url,
                 "alt": img.alt or "",
-             }
+            }
             for img in odj.images.all()
         ]
-
 
     def get_category(self, obj: Product):
         """
         Метод вернет категорию товара int
         """
         return obj.category.id
-
 
     def get_tags(self, obj: Product):
         """
@@ -78,14 +74,12 @@ class ProductSerializer(serializers.ModelSerializer):
             for tag in obj.tags.all()
         ]
 
-
     def get_reviews(self, obj: Product):
         """
         Метод вернет кол-во отзывов(кол-во записей в табл Review)
         """
         # return obj.reviews.count()
         return obj.reviews_count
-
 
     def get_rating(self, obj: Product):
         """
@@ -102,7 +96,8 @@ class ProductDetailSerializer(ProductSerializer):
     GET /product{id}
     Наследует поля от ProductSerializer
     """
-    fullDescription = serializers.CharField(source='full_description')
+
+    fullDescription = serializers.CharField(source="full_description")
     tags = serializers.SerializerMethodField()
     reviews = serializers.SerializerMethodField()
     specifications = serializers.SerializerMethodField()
@@ -115,26 +110,20 @@ class ProductDetailSerializer(ProductSerializer):
             "specifications",
         ]
 
-
     def get_tags(self, obj: Product):
         """
         Метод вернет теги товара в формате ["string"]
         """
         return [tag.name for tag in obj.tags.all()] or []
 
-
     def get_specifications(self, obj: Product):
         """
         метод вернет спецификацию товара в формате [{"name": "size"...}...]
         """
         return [
-            {
-                "name": spec.name,
-                "value": spec.value
-            }
+            {"name": spec.name, "value": spec.value}
             for spec in obj.specifications.all()
         ]
-
 
     def get_reviews(self, obj: Product):
         """
@@ -146,7 +135,7 @@ class ProductDetailSerializer(ProductSerializer):
                 "email": review.email,
                 "text": review.text,
                 "rate": review.rate,
-                "date": review.date
+                "date": review.date,
             }
             for review in obj.reviews.all()
         ]
@@ -158,18 +147,13 @@ class CategorySerializer(serializers.ModelSerializer):
 
     Преобразует объекты Category <-> JSON.
     """
+
     image = serializers.SerializerMethodField()
     subcategories = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
-        fields = [
-            "id",
-            "title",
-            "image",
-            "subcategories"
-        ]
-
+        fields = ["id", "title", "image", "subcategories"]
 
     def get_image(self, odj: Category) -> dict:
         """
@@ -182,17 +166,18 @@ class CategorySerializer(serializers.ModelSerializer):
             }
         return None
 
-
     def get_subcategories(self, obj: Category):
         """
         Возвращает список подкатегорий рекурсивно
         """
-        level = self.context.get("level", 1) # получаем уровень вложенности категории
-        if level >= 2: # Если уровень больше двух, возвращаем пустой список
+        level = self.context.get("level", 1)  # получаем уровень вложенности категории
+        if level >= 2:  # Если уровень больше двух, возвращаем пустой список
             return []
-        sub = obj.subcategories.all() # обращаемся ко всем активным подкатегориям
+        sub = obj.subcategories.all()  # обращаемся ко всем активным подкатегориям
         # рекурсивно вызываем CategorySerializer и передаем в контекст уровень вложенности
-        return CategorySerializer(sub, many=True, context={"level": level + 1}).data or []
+        return (
+            CategorySerializer(sub, many=True, context={"level": level + 1}).data or []
+        )
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -201,15 +186,10 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     Преобразует объекты Review <-> JSON.
     """
+
     class Meta:
         model = Review
-        fields = [
-            "author",
-            "email",
-            "text",
-            "rate",
-            "date"
-        ]
+        fields = ["author", "email", "text", "rate", "date"]
 
 
 class SalesSerializer(serializers.ModelSerializer):
@@ -219,6 +199,7 @@ class SalesSerializer(serializers.ModelSerializer):
     Преобразует объекты Sale <-> JSON
     Используется для получения сериализованых обьектов Sale(скидок\акций с товарами)
     """
+
     id = serializers.SerializerMethodField()
     price = serializers.SerializerMethodField()
     salePrice = serializers.FloatField(source="sale_price")
@@ -228,14 +209,7 @@ class SalesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sale
-        fields = [
-            "id",
-            "price",
-            "salePrice",
-            "dateFrom",
-            "dateTo",
-            "images"
-        ]
+        fields = ["id", "price", "salePrice", "dateFrom", "dateTo", "images"]
 
     def get_id(self, obj: Sale):
         """
@@ -244,15 +218,13 @@ class SalesSerializer(serializers.ModelSerializer):
         if obj.product:
             return str(obj.product.pk)
 
-
     def get_price(self, obj: Sale):
         """
         Метод вернет цену(price) без учета скидки
         """
-        if hasattr(obj, 'product') and obj.product:
+        if hasattr(obj, "product") and obj.product:
             return float(obj.product.price)
         return None
-
 
     def get_dateFrom(self, obj: Sale):
         # приводим дату к требуемому сваггер виду
@@ -261,7 +233,6 @@ class SalesSerializer(serializers.ModelSerializer):
     def get_dateTo(self, obj: Sale):
         # приводим дату к требуемому сваггер виду
         return obj.date_to.strftime("%m-%d") if obj.date_to else None
-
 
     def get_images(self, obj: Sale):
         """

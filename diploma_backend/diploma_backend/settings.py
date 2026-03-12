@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
+
 import os.path
 from pathlib import Path
 
@@ -16,13 +17,13 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_$1-r&aotgm&=@!fp5r%=mz^izccnefv@zs$p(@!c_&z-cot88'
+SECRET_KEY = "django-insecure-_$1-r&aotgm&=@!fp5r%=mz^izccnefv@zs$p(@!c_&z-cot88"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,60 +34,60 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'frontend', # HTML, шаблоны и статика
-    'products.apps.ProductsConfig', # API и модели товаров
-    'phonenumber_field', # приложение для валидации номера телефона
-    'django_cleanup.apps.CleanupConfig', # приложение для удаления не актуальных медиа
-    'users.apps.UsersConfig', # приложение для регистрации пользователей
-    'basket.apps.BasketConfig', # приложение - корзина
-    'orders.apps.OrdersConfig', # приложение - заказы
-    'payment.apps.PaymentConfig', # приложение - оплата
-    'accounts_auth.apps.AccountsAuthConfig', # приложение - регистрация, аутентификация
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "frontend",  # HTML, шаблоны и статика
+    "products.apps.ProductsConfig",  # API и модели товаров
+    "phonenumber_field",  # приложение для валидации номера телефона
+    "django_cleanup.apps.CleanupConfig",  # приложение для удаления не актуальных медиа
+    "users.apps.UsersConfig",  # приложение для регистрации пользователей
+    "basket.apps.BasketConfig",  # приложение - корзина
+    "orders.apps.OrdersConfig",  # приложение - заказы
+    "payment.apps.PaymentConfig",  # приложение - оплата
+    "accounts_auth.apps.AccountsAuthConfig",  # приложение - регистрация, аутентификация
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'diploma_backend.urls'
+ROOT_URLCONF = "diploma_backend.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'frontend/templates')], # путь к вашим шаблонам
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [os.path.join(BASE_DIR, "frontend/templates")],  # путь к вашим шаблонам
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'diploma_backend.wsgi.application'
+WSGI_APPLICATION = "diploma_backend.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -96,16 +97,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -113,9 +114,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -125,11 +126,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'diploma_backend' / 'staticfiles'  # куда collectstatic будет копировать
+STATIC_URL = "/static/"
+STATIC_ROOT = (
+    BASE_DIR / "diploma_backend" / "staticfiles"
+)  # куда collectstatic будет копировать
 
 # Папка фронтенда для статики
-frontend_static_path = BASE_DIR / 'diploma-frontend' / 'frontend' / 'static'
+frontend_static_path = BASE_DIR / "diploma-frontend" / "frontend" / "static"
 
 # STATICFILES_DIRS добавляем только если путь реально существует
 STATICFILES_DIRS = [frontend_static_path] if frontend_static_path.exists() else []
@@ -151,24 +154,24 @@ LOGGING = {
 
 # URL брокера (Redis)
 # Celery будет подключаться к Redis для получения задач
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = "redis://localhost:6379/0"
 # localhost:6379 - адрес Redis сервера
 # /0 - номер базы данных Redis (0-15)
 
 # Где хранить результаты выполнения задач
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 
 # Часовой пояс (такой же, как TIME_ZONE)
-CELERY_TIMEZONE = 'UTC'
+CELERY_TIMEZONE = "UTC"
 
 # Принимать задачи в формате JSON
-CELERY_ACCEPT_CONTENT = ['json']
+CELERY_ACCEPT_CONTENT = ["json"]
 
 # Сериализация задач в JSON
-CELERY_TASK_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = "json"
 
 # Результаты тоже в JSON
-CELERY_RESULT_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = "json"
 
 # Показывать статус задачи (PENDING, STARTED, SUCCESS, FAILURE)
 CELERY_TASK_TRACK_STARTED = True

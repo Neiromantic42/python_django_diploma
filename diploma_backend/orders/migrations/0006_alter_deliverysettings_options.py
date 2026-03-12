@@ -6,12 +6,15 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('orders', '0005_deliverysettings'),
+        ("orders", "0005_deliverysettings"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='deliverysettings',
-            options={'verbose_name': 'Настройка доставки', 'verbose_name_plural': 'Настройки доставки'},
+            name="deliverysettings",
+            options={
+                "verbose_name": "Настройка доставки",
+                "verbose_name_plural": "Настройки доставки",
+            },
         ),
     ]

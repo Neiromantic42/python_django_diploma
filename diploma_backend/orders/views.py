@@ -1,26 +1,24 @@
-from rest_framework.exceptions import ValidationError
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from .serializers import (
-    OrderCreateSerializer,
-    OrderDetailSerializer,
-    ConfirmOrderSerializer,
-)
-from .models import Order, OrderProduct
-from products.models import Product
-from basket.models import Basket
-from django.shortcuts import get_object_or_404
-from django.db import transaction
-
 import logging
 
+from django.db import transaction
+from django.shortcuts import get_object_or_404
+from rest_framework.decorators import api_view
+from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
 
-logger = logging.getLogger(__name__) # Создаем логгер
+from basket.models import Basket
+from products.models import Product
+
+from .models import Order
+from .serializers import (ConfirmOrderSerializer, OrderCreateSerializer,
+                          OrderDetailSerializer)
+
+logger = logging.getLogger(__name__)  # Создаем логгер
 
 
-@api_view(['POST', 'GET'])
+@api_view(["POST", "GET"])
 def order_create(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         """
         Создание заказа с товарами
         """
@@ -31,29 +29,25 @@ def order_create(request):
         logger.info(f"Данные от фронта: {products_data}")
 
         serializer = OrderCreateSerializer(
-            data={'products': products_data},
-            context={'request': request}
+            data={"products": products_data}, context={"request": request}
         )
         serializer.is_valid(raise_exception=True)
         order = serializer.save()
 
         return Response({"orderId": order.id})
 
-    elif request.method == 'GET':
+    elif request.method == "GET":
         """
         Получение списка заказов текущего юзера
         """
         current_user = request.user
         logger.info(f"Текущий юзер: {current_user}")
-        orders = Order.objects.filter(user=current_user).order_by('-created_at')
-        serializer = OrderDetailSerializer(
-            orders,
-            many=True
-        )
+        orders = Order.objects.filter(user=current_user).order_by("-created_at")
+        serializer = OrderDetailSerializer(orders, many=True)
         return Response(serializer.data)
 
 
-@api_view(['GET', 'POST'])
+@api_view(["GET", "POST"])
 def order_detail(request, id):
     with transaction.atomic():
         """
@@ -61,7 +55,7 @@ def order_detail(request, id):
         По 'POST' - запросу обновляем заказ согласно данным из тела запроса
         """
         # Если метод запроса GET, то возвращаем конкретный заказ
-        if request.method == 'GET':
+        if request.method == "GET":
             order_pk = id
             logger.info(f"Запрошен заказ с id: {order_pk}")
             logger.info(f"Заказчик-текущий юзер: {request.user}")
@@ -71,24 +65,22 @@ def order_detail(request, id):
             return Response(serializer.data)
         # Иначе, если запрос POST то,
         # обновляем данные заказа на введенные пользователем
-        elif request.method == 'POST':
+        elif request.method == "POST":
             order = get_object_or_404(Order, pk=id)
             logger.info(f"Данные заказа от фронта: {request.data}")
-            serializer = ConfirmOrderSerializer(
-                order,
-                data = request.data,
-                partial=True
-            )
+            serializer = ConfirmOrderSerializer(order, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             # поле того как данные заказа обновлены\подтверждены
             # уменьшаем кол-во товара на складе
-            for item in request.data['products']:
-                product_pk = item['id']
-                order_product_count = item['count']
+            for item in request.data["products"]:
+                product_pk = item["id"]
+                order_product_count = item["count"]
                 product = Product.objects.get(pk=product_pk)
                 if product.count < order_product_count:
-                    raise ValidationError({"error": f"Недостаточно тора {product.title} на складе"})
+                    raise ValidationError(
+                        {"error": f"Недостаточно тора {product.title} на складе"}
+                    )
                 product.count -= order_product_count
                 product.save()
             # после того как заказ состоялся\обновился\подтвердился

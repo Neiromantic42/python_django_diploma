@@ -7,48 +7,86 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0003_alter_product_archived'),
+        ("products", "0003_alter_product_archived"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='category',
-            name='image',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='products.image'),
+            model_name="category",
+            name="image",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="products.image",
+            ),
         ),
         migrations.AlterField(
-            model_name='category',
-            name='parent',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='subcategories', to='products.category'),
+            model_name="category",
+            name="parent",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="subcategories",
+                to="products.category",
+            ),
         ),
         migrations.AlterField(
-            model_name='image',
-            name='product',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='images', to='products.product', verbose_name='Связь с продуктом: один ко многим'),
+            model_name="image",
+            name="product",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="images",
+                to="products.product",
+                verbose_name="Связь с продуктом: один ко многим",
+            ),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='category',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.category'),
+            model_name="product",
+            name="category",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="products.category"
+            ),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='tags',
-            field=models.ManyToManyField(blank=True, related_name='images', to='products.tag', verbose_name='связь многие ко многим с тегом продукта'),
+            model_name="product",
+            name="tags",
+            field=models.ManyToManyField(
+                blank=True,
+                related_name="images",
+                to="products.tag",
+                verbose_name="связь многие ко многим с тегом продукта",
+            ),
         ),
         migrations.AlterField(
-            model_name='review',
-            name='product',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reviews', to='products.product', verbose_name='Связь с продуктом'),
+            model_name="review",
+            name="product",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="reviews",
+                to="products.product",
+                verbose_name="Связь с продуктом",
+            ),
         ),
         migrations.AlterField(
-            model_name='sale',
-            name='product',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='products.product', verbose_name='Связь с моделью продуктов, один к одному'),
+            model_name="sale",
+            name="product",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="products.product",
+                verbose_name="Связь с моделью продуктов, один к одному",
+            ),
         ),
         migrations.AlterField(
-            model_name='specification',
-            name='product',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='specifications', to='products.product'),
+            model_name="specification",
+            name="product",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="specifications",
+                to="products.product",
+            ),
         ),
     ]

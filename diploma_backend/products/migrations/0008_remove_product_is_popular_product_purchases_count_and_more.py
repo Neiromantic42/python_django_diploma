@@ -6,22 +6,30 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0007_alter_category_is_active'),
+        ("products", "0007_alter_category_is_active"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='product',
-            name='is_popular',
+            model_name="product",
+            name="is_popular",
         ),
         migrations.AddField(
-            model_name='product',
-            name='purchases_count',
-            field=models.PositiveIntegerField(default=0, help_text='Автоматически увеличивается при каждой покупке. Редактировать вручную не требуется. Но если очень хочется то можно.', verbose_name='количество покупок'),
+            model_name="product",
+            name="purchases_count",
+            field=models.PositiveIntegerField(
+                default=0,
+                help_text="Автоматически увеличивается при каждой покупке. Редактировать вручную не требуется. Но если очень хочется то можно.",
+                verbose_name="количество покупок",
+            ),
         ),
         migrations.AddField(
-            model_name='product',
-            name='sort_index',
-            field=models.PositiveIntegerField(default=0, help_text='Чем меньше значение, тем выше товар в топе. При одинаковом индексе учитывается количество покупок.', verbose_name='Индекс популярности товара'),
+            model_name="product",
+            name="sort_index",
+            field=models.PositiveIntegerField(
+                default=0,
+                help_text="Чем меньше значение, тем выше товар в топе. При одинаковом индексе учитывается количество покупок.",
+                verbose_name="Индекс популярности товара",
+            ),
         ),
     ]

@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0005_category_is_active'),
+        ("products", "0005_category_is_active"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='category',
-            name='is_active',
-            field=models.BooleanField(default=True, help_text='Если выключено, категория считается активной, в противном случае архивируется, и не отображается в категориях - выпадающем меню', verbose_name='Архивация категории (Активна/Не активна)'),
+            model_name="category",
+            name="is_active",
+            field=models.BooleanField(
+                default=True,
+                help_text="Если выключено, категория считается активной, в противном случае архивируется, и не отображается в категориях - выпадающем меню",
+                verbose_name="Архивация категории (Активна/Не активна)",
+            ),
         ),
     ]

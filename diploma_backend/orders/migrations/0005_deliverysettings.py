@@ -6,17 +6,49 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('orders', '0004_alter_order_payment_type'),
+        ("orders", "0004_alter_order_payment_type"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='DeliverySettings',
+            name="DeliverySettings",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('express_price', models.DecimalField(decimal_places=2, default=500, max_digits=10, verbose_name='Стоимость express(быстрой) доставки')),
-                ('free_threshold', models.DecimalField(decimal_places=2, default=2000, max_digits=10, verbose_name='Порог стоимости товара для бесплатной доставки')),
-                ('standard_price', models.DecimalField(decimal_places=2, default=200, max_digits=10, verbose_name='Стоимость обычной\\стандартной доставки')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "express_price",
+                    models.DecimalField(
+                        decimal_places=2,
+                        default=500,
+                        max_digits=10,
+                        verbose_name="Стоимость express(быстрой) доставки",
+                    ),
+                ),
+                (
+                    "free_threshold",
+                    models.DecimalField(
+                        decimal_places=2,
+                        default=2000,
+                        max_digits=10,
+                        verbose_name="Порог стоимости товара для бесплатной доставки",
+                    ),
+                ),
+                (
+                    "standard_price",
+                    models.DecimalField(
+                        decimal_places=2,
+                        default=200,
+                        max_digits=10,
+                        verbose_name="Стоимость обычной\\стандартной доставки",
+                    ),
+                ),
             ],
         ),
     ]

@@ -10,18 +10,42 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('products', '0015_alter_sale_product'),
+        ("products", "0015_alter_sale_product"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Basket',
+            name="Basket",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('count', models.PositiveIntegerField(default=0)),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='basket', to='products.product', verbose_name='связь с продуктом: один продукт во множестве позиций')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='basket', to=settings.AUTH_USER_MODEL, verbose_name='связь с пользователем: у одного юзера много позиций')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("count", models.PositiveIntegerField(default=0)),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="basket",
+                        to="products.product",
+                        verbose_name="связь с продуктом: один продукт во множестве позиций",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="basket",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="связь с пользователем: у одного юзера много позиций",
+                    ),
+                ),
             ],
         ),
     ]

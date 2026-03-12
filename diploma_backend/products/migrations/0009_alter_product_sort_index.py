@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0008_remove_product_is_popular_product_purchases_count_and_more'),
+        ("products", "0008_remove_product_is_popular_product_purchases_count_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='product',
-            name='sort_index',
-            field=models.PositiveIntegerField(default=50, help_text='Чем меньше значение, тем выше товар в топе. При одинаковом индексе учитывается количество покупок.', verbose_name='Индекс популярности товара'),
+            model_name="product",
+            name="sort_index",
+            field=models.PositiveIntegerField(
+                default=50,
+                help_text="Чем меньше значение, тем выше товар в топе. При одинаковом индексе учитывается количество покупок.",
+                verbose_name="Индекс популярности товара",
+            ),
         ),
     ]

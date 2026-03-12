@@ -6,23 +6,25 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0010_product_is_banner'),
+        ("products", "0010_product_is_banner"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sale',
-            name='date_from',
-            field=models.DateField(verbose_name='Дата начала акции\\скидки'),
+            model_name="sale",
+            name="date_from",
+            field=models.DateField(verbose_name="Дата начала акции\\скидки"),
         ),
         migrations.AlterField(
-            model_name='sale',
-            name='date_to',
-            field=models.DateField(verbose_name='Дата конца акции\\скидки'),
+            model_name="sale",
+            name="date_to",
+            field=models.DateField(verbose_name="Дата конца акции\\скидки"),
         ),
         migrations.AlterField(
-            model_name='specification',
-            name='value',
-            field=models.CharField(max_length=1500, verbose_name='Полная характеристика товара'),
+            model_name="specification",
+            name="value",
+            field=models.CharField(
+                max_length=1500, verbose_name="Полная характеристика товара"
+            ),
         ),
     ]

@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0009_alter_product_sort_index'),
+        ("products", "0009_alter_product_sort_index"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='product',
-            name='is_banner',
-            field=models.BooleanField(default=False, help_text='Если включено, товар попадает в блок banners на главной странице. Он же считается рекламным, продающим.', verbose_name='Продающие товары (banners)'),
+            model_name="product",
+            name="is_banner",
+            field=models.BooleanField(
+                default=False,
+                help_text="Если включено, товар попадает в блок banners на главной странице. Он же считается рекламным, продающим.",
+                verbose_name="Продающие товары (banners)",
+            ),
         ),
     ]

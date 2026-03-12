@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
-from rest_framework import serializers
-from .models import Profile, ImagesProfile
 from phonenumber_field.serializerfields import PhoneNumberField
+from rest_framework import serializers
+
+from .models import ImagesProfile, Profile
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -29,23 +30,21 @@ class ProfileSerializer(serializers.ModelSerializer):
     fullName = serializers.CharField(required=False)
     email = serializers.EmailField(required=False)
     avatar = serializers.DictField(required=False, allow_null=True)
-    phone = PhoneNumberField(required=False, allow_blank=True, region='RU')
+    phone = PhoneNumberField(required=False, allow_blank=True, region="RU")
 
     class Meta:
         model = Profile
-        fields = [
-            "fullName",
-            "email",
-            "phone",
-            "avatar"
-        ]
+        fields = ["fullName", "email", "phone", "avatar"]
 
     def validate_email(self, value):
-        if (User.objects.filter(email=value)
-                .exclude(pk=self.instance.user.pk if self.instance else None)
-                .exists()
+        if (
+            User.objects.filter(email=value)
+            .exclude(pk=self.instance.user.pk if self.instance else None)
+            .exists()
         ):
-            raise serializers.ValidationError(f"Пользователь с таким email: {value} уже зарегистрирован")
+            raise serializers.ValidationError(
+                f"Пользователь с таким email: {value} уже зарегистрирован"
+            )
         return value
 
     def to_representation(self, instance: Profile):
@@ -62,7 +61,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             parts = [
                 user.last_name,
                 user.first_name,
-                getattr(instance, "middle_name", "")
+                getattr(instance, "middle_name", ""),
             ]
             # filter(None, parts) убирает пустые строки
             # join объединяет через пробел
@@ -75,22 +74,19 @@ class ProfileSerializer(serializers.ModelSerializer):
         # Переопределяем значения так,
         # как их ожидает фронтенд
 
-        data['fullName'] = get_full_name(
-            user=instance.user,
-            instance=instance
-        )
+        data["fullName"] = get_full_name(user=instance.user, instance=instance)
 
         # Email хранится в модели User
-        data['email'] = instance.user.email
+        data["email"] = instance.user.email
 
         # Приводим phone к строке (если None — возвращаем пустую строку)
-        data['phone'] = str(instance.phone) if instance.phone else ""
+        data["phone"] = str(instance.phone) if instance.phone else ""
 
         # Формируем объект avatar
         # hasattr проверяет есть ли связанный объект images
-        data['avatar'] = {
+        data["avatar"] = {
             "src": instance.images.src.url if hasattr(instance, "images") else None,
-            "alt": instance.images.alt if hasattr(instance, "images") else ""
+            "alt": instance.images.alt if hasattr(instance, "images") else "",
         }
 
         return data
@@ -143,14 +139,13 @@ class AvatarSerializer(serializers.ModelSerializer):
     Сериализатор для Аватар
     """
 
-    avatar = serializers.ImageField(source='src', )
+    avatar = serializers.ImageField(
+        source="src",
+    )
 
     class Meta:
         model = ImagesProfile
-        fields = [
-            'avatar',
-            'alt'
-        ]
+        fields = ["avatar", "alt"]
 
     def validate_avatar(self, value):
         max_size = 2 * 1024 * 1024
@@ -165,11 +160,12 @@ class PasswordSerializer(serializers.Serializer):
     """
     Сериализатор для обновления пароля
     """
+
     currentPassword = serializers.CharField(write_only=True)
     newPassword = serializers.CharField(write_only=True, max_length=8, min_length=3)
 
     def validate_currentPassword(self, value):
-        user = self.context['request'].user # получаем текущего юзера из контекста
+        user = self.context["request"].user  # получаем текущего юзера из контекста
         # проверяем текущий пароль объекта юзер и сравниваем с переданный в запросе
         if not user.check_password(value):
             # если совпадений нет бросам исключение
@@ -178,8 +174,6 @@ class PasswordSerializer(serializers.Serializer):
 
     def update(self, instance: User, validated_data):
         # хешируем новый пароль методом обьекта User set_password
-        instance.set_password(validated_data['newPassword'])
-        instance.save() # сохраняем новы пароль
+        instance.set_password(validated_data["newPassword"])
+        instance.save()  # сохраняем новы пароль
         return instance
-
-

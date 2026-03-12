@@ -7,13 +7,19 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0002_remove_profile_avatar_imagesprofile'),
+        ("users", "0002_remove_profile_avatar_imagesprofile"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='profile',
-            name='phone',
-            field=phonenumber_field.modelfields.PhoneNumberField(max_length=128, null=True, region='RU', unique=True, verbose_name='Телефон'),
+            model_name="profile",
+            name="phone",
+            field=phonenumber_field.modelfields.PhoneNumberField(
+                max_length=128,
+                null=True,
+                region="RU",
+                unique=True,
+                verbose_name="Телефон",
+            ),
         ),
     ]

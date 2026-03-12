@@ -1,7 +1,8 @@
 from django.db.models.aggregates import Avg
-from rest_framework import serializers
-from .models import Basket
+
 from products.serializers import ProductSerializer
+
+from .models import Basket
 
 
 class BasketSerializer(ProductSerializer):
@@ -17,7 +18,7 @@ class BasketSerializer(ProductSerializer):
 
     def to_representation(self, instance: Basket):
         data = super().to_representation(instance.product)
-        data['count'] = instance.count
+        data["count"] = instance.count
         return data
 
     def get_reviews(self, obj):
@@ -30,4 +31,4 @@ class BasketSerializer(ProductSerializer):
         """
         Метод вернет средний рейтинг товара
         """
-        return obj.reviews.aggregate(avg=Avg('rate'))['avg'] or 0
+        return obj.reviews.aggregate(avg=Avg("rate"))["avg"] or 0
