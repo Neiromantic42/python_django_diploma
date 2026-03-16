@@ -2,7 +2,8 @@ import logging
 
 from django.db import transaction
 from django.shortcuts import get_object_or_404
-from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
@@ -17,6 +18,7 @@ logger = logging.getLogger(__name__)  # Создаем логгер
 
 
 @api_view(["POST", "GET"])
+@permission_classes([IsAuthenticated])
 def order_create(request):
     if request.method == "POST":
         """
