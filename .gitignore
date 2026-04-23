@@ -1,2 +1,27 @@
+# PyCharm
+.idea/
 
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.venv/
+
+# Database
+diploma_backend/db.sqlite3
+diploma_backend/db_backup_before_migrate.sqlite3
+diploma_backend/db_backup.sqlite3
+# Media files (user uploads)
+diploma_backend/media/
+
+# OS specific
 .DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Static files собранные Django (можно игнорить, если собираешь на сервере)
+diploma_backend/staticfiles/
